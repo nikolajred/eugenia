@@ -14,10 +14,4 @@ public class EugeniaApplication {
 
 	}
 
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplateBuilder().build();
-	}
-
-
 }
