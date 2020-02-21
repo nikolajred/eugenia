@@ -18,4 +18,5 @@ public class TeacherController {
     public Teacher getTeacherById(@PathVariable Long id){
         return teacherService.getTeacher(id);
     }
+
 }
