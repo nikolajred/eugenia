@@ -1,7 +1,9 @@
 package com.nix.eugenia;
 
 import com.nix.eugenia.model.Student;
+import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.StudentRepository;
+import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,5 +22,12 @@ import org.springframework.context.annotation.Configuration;
                 log.info("Preloading " + repository.save(new Student("Nick Red", "potentialStudent")));
             };
         }
+
+
+
+
     }
+
+
+
 

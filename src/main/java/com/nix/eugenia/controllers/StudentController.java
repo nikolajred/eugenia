@@ -11,6 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.hateoas.CollectionModel;
 
 
+import javax.persistence.PostUpdate;
 import java.util.List;
 
 
@@ -32,7 +33,7 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    Student newEmployee(@RequestBody Student newStudent) {
+    Student newStudent(@RequestBody Student newStudent) {
         return repository.save(newStudent);
     }
 
@@ -52,6 +53,7 @@ public class StudentController {
 
 
 
+
     @PutMapping("/students/{id}")
     Student replaceStudent(@RequestBody Student newStudent, @PathVariable Long id) {
 
@@ -67,8 +69,15 @@ public class StudentController {
                 });
     }
 
+
+
     @DeleteMapping("/students/{id}")
     void deleteStudent(@PathVariable Long id) {
         repository.deleteById(id);
     }
+
+
+
+
+
 }
