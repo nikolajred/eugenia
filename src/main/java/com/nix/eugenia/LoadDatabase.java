@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
     @Slf4j
     class LoadDatabase {
 
-        @Bean
+    /*    @Bean
         CommandLineRunner initDatabase(StudentRepository repository) {
             return args -> {
                 log.info("Preloading " + repository.save(new Student("Vadym Kiiashko", "activeStudent")));
@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
             };
         }
 
-
+*/
 
 
     }
