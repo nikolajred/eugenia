@@ -17,4 +17,7 @@ public class Administrator {
     private String name;
     @Column
     private String lastname;
+
+
+
 }

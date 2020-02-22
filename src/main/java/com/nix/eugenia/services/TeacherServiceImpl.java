@@ -1,5 +1,6 @@
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.exceptions.StudentNotFoundException;
 import com.nix.eugenia.model.DayOfWeek;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.TeacherRepository;
@@ -20,9 +21,12 @@ public class TeacherServiceImpl implements TeacherService{
         return teacherRepository.findById(id).get();
     }
 
-    @Override
+   @Override
     public List<Teacher> getTeacherByTimeAndDay(DayOfWeek dayOfWeek, String workDay) {
-        Example<Teacher> sExample = ;
-        return teacherRepository.findAll(sExample);
+
+       //пометил NULL чтоб компилилось
+        Example<Teacher> sExample = null;
+        // пометил NULL чтоб компилилось
+        return null;//teacherRepository.findAll(sExample);
     }
 }

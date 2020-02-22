@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,6 +29,11 @@ public class Teacher {
     private DayOfWeek dayOfWeek;
     @Column
     private String workTime;
+
+    @OneToMany(mappedBy="currentTeacher")
+    private Set<Student> students;
+    private Long wage;
+
 }
 
 class WorkTime {

@@ -24,12 +24,14 @@ public class Student {
     Long id;
     private String name;
     private String role;
-   /* @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Teacher myCurrentTeacher;
-    @ManyToMany(mappedBy = "teacher")
-    private Set<Teacher> teachers;
+    private Long lessonsLeft;
 
-*/
+
+    @ManyToOne
+    @JoinColumn(name="teacher_id")
+    private Teacher currentTeacher;
+
+
 
 
     Student() {
@@ -38,6 +40,10 @@ public class Student {
     public Student(String name, String role) {
         this.name = name;
         this.role = role;
+    }
+
+    public void payForLessons(Long payment){
+        this.lessonsLeft += (payment/this.currentTeacher.getWage());
     }
 
 
