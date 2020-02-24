@@ -1,13 +1,12 @@
 package com.nix.eugenia.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 @Table(name = "teacher")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Teacher {
 
     @Id
@@ -24,15 +24,18 @@ public class Teacher {
     private String name;
     @Column
     private String lastname;
-    @Column
-    private DayOfWeek dayOfWeek;
-    @Column
-    private String workTime;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Schedul> schedul = new ArrayList<>();
+
+    public void addSchedul(Schedul schedul) {
+        this.schedul.add( schedul );
+        schedul.getTeachers().add( this );
+    }
+
+    public void removeSchedul(Schedul schedul) {
+        this.schedul.remove( schedul );
+        schedul.getTeachers().remove( this );
+    }
+
 }
 
-class WorkTime {
-    String[] workTime = new String[]{"08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00",
-            "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00",
-            "20:00:00", "21:00:00"};
-
-}

@@ -1,12 +1,14 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.model.DayOfWeek;
+import com.nix.eugenia.model.Schedul;
 import com.nix.eugenia.model.Teacher;
+import com.nix.eugenia.repositories.SchedulRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
+import org.joda.time.Interval;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,6 +16,7 @@ import java.util.List;
 public class TeacherServiceImpl implements TeacherService{
 
     private final TeacherRepository teacherRepository;
+    private final SchedulRepository schedulRepository;
 
     @Override
     public Teacher getTeacher(Long id) {
@@ -21,8 +24,19 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public List<Teacher> getTeacherByTimeAndDay(DayOfWeek dayOfWeek, String workDay) {
-        Example<Teacher> sExample = ;
-        return teacherRepository.findAll(sExample);
+    public List<Teacher> getTeacherByInterval(Interval interval) {
+        List<Teacher> teachers = teacherRepository.findAll();
+        List<Schedul> schedul = schedulRepository.findAll();
+        List<Teacher> responseTeachers = new ArrayList<>();
+        for (Teacher teacher : teachers) {
+            for (Schedul schedules : schedul) {
+                Interval NewInterval = new Interval(schedul.interval);
+                if(interval.overlaps(NewInterval)){
+                    responseTeachers.add(teacher);
+                }
+            }
+        }
+        return responseTeachers;
     }
+
 }

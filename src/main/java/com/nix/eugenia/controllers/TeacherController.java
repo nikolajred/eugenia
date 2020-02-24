@@ -14,7 +14,7 @@ public class TeacherController {
 
     private final TeacherService teacherService;
 
-    @GetMapping ("/hello/{id}")
+    @GetMapping ("/teacher/{id}")
     public Teacher getTeacherById(@PathVariable Long id){
         return teacherService.getTeacher(id);
     }
