@@ -1,5 +1,7 @@
 package com.nix.eugenia.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.Set;
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     @Column
     private String name;
@@ -27,11 +30,14 @@ public class Teacher {
     private String lastname;
 
 
-
     public Teacher(String name) {
         this.name = name;
     }
 
-    @ManyToMany(mappedBy = "teachersTaughtMe")
-    private List<Student> students = new ArrayList<>();
+    @OneToMany(mappedBy="teacher")
+    @JsonIgnoreProperties("teacher")
+    @JsonManagedReference
+    private List<Student> students;
+
+
 }
