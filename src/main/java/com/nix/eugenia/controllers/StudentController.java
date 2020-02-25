@@ -3,6 +3,7 @@ package com.nix.eugenia.controllers;
 import com.nix.eugenia.exceptions.StudentNotFoundException;
 import com.nix.eugenia.model.Student;
 
+import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
@@ -49,10 +50,6 @@ public class StudentController {
                 linkTo(methodOn(StudentController.class).one(id)).withSelfRel(),
                 linkTo(methodOn(StudentController.class).all()).withRel("students"));
     }
-
-
-
-
 
     @PutMapping("/students/{id}")
     Student replaceStudent(@RequestBody Student newStudent, @PathVariable Long id) {
