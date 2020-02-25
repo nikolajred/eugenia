@@ -1,4 +1,5 @@
 package com.nix.eugenia.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.joda.time.Interval;
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Schedul {
     private String interval;
 
     @ManyToMany(mappedBy = "schedul")
+    @JsonIgnoreProperties("schedul")
     private List<Teacher> teachers = new ArrayList<>();
 
 

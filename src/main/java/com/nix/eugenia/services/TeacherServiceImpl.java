@@ -25,18 +25,23 @@ public class TeacherServiceImpl implements TeacherService{
 
     @Override
     public List<Teacher> getTeacherByInterval(Interval interval) {
+        return null;
+    }
+
+   /* @Override
+    public List<Teacher> getTeacherByInterval(Interval interval) {
         List<Teacher> teachers = teacherRepository.findAll();
         List<Schedul> schedul = schedulRepository.findAll();
-        List<Teacher> responseTeachers = new ArrayList<>();
+        List<Teacher> TeachersByInterval = new ArrayList<>();
         for (Teacher teacher : teachers) {
             for (Schedul schedules : schedul) {
-                Interval NewInterval = new Interval(schedul.interval);
+                Interval NewInterval = new Interval(schedul.getInterval());
                 if(interval.overlaps(NewInterval)){
-                    responseTeachers.add(teacher);
+                    TeachersByInterval.add(teacher);
                 }
             }
         }
-        return responseTeachers;
-    }
+        return TeachersByInterval;
+    }*/
 
 }

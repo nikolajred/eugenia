@@ -1,5 +1,6 @@
 package com.nix.eugenia.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 
@@ -25,16 +26,17 @@ public class Teacher {
     @Column
     private String lastname;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnoreProperties("teachers")
     private List<Schedul> schedul = new ArrayList<>();
 
     public void addSchedul(Schedul schedul) {
-        this.schedul.add( schedul );
-        schedul.getTeachers().add( this );
+        this.schedul.add(schedul);
+        schedul.getTeachers().add(this);
     }
 
     public void removeSchedul(Schedul schedul) {
-        this.schedul.remove( schedul );
-        schedul.getTeachers().remove( this );
+        this.schedul.remove(schedul);
+        schedul.getTeachers().remove(this);
     }
 
 }
