@@ -1,6 +1,8 @@
 package com.nix.eugenia.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +28,7 @@ public class Student {
     private String role;
     private Long lessonsLeft;
 
-
+    @JsonIgnoreProperties
     @ManyToOne
     @JoinColumn(name="teacher_id")
     private Teacher currentTeacher;

@@ -1,5 +1,7 @@
 package com.nix.eugenia.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +31,7 @@ public class Teacher {
     private DayOfWeek dayOfWeek;
     @Column
     private String workTime;
-
+    @JsonIgnoreProperties
     @OneToMany(mappedBy="currentTeacher")
     private Set<Student> students;
     private Long wage;
