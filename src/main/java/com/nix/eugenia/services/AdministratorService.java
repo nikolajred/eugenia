@@ -9,4 +9,5 @@ public interface AdministratorService {
     public List<Teacher> addTeacher();
     public List<Teacher> removeTeacher();
     public List<Teacher> updateTeacher();
+
 }

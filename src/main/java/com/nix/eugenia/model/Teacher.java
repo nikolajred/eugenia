@@ -27,16 +27,16 @@ public class Teacher {
     private String lastname;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnoreProperties("teachers")
-    private List<Schedul> schedul = new ArrayList<>();
+    private List<Schedule> schedule = new ArrayList<>();
 
-    public void addSchedul(Schedul schedul) {
-        this.schedul.add(schedul);
-        schedul.getTeachers().add(this);
+    public void addSchedule(Schedule schedule) {
+        this.schedule.add(schedule);
+        schedule.getTeachers().add(this);
     }
 
-    public void removeSchedul(Schedul schedul) {
-        this.schedul.remove(schedul);
-        schedul.getTeachers().remove(this);
+    public void removeSchedule(Schedule schedule) {
+        this.schedule.remove(schedule);
+        schedule.getTeachers().remove(this);
     }
 
 }

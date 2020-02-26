@@ -16,7 +16,7 @@ public class AdministratorController {
     StudentController studentController;
 
 
-    @RequestMapping(value = "/edit-students", method = RequestMethod.POST)
+  /*  @RequestMapping(value = "/edit-students", method = RequestMethod.POST)
     public Student editStudent(@RequestParam("studentId") Long studentID, Student model, Long payment) {
 
         try {
@@ -29,5 +29,5 @@ public class AdministratorController {
             throw new StudentNotFoundException(studentID);
         }
 
-    }
+    }*/
 }

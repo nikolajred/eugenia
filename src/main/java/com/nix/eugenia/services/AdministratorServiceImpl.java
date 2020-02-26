@@ -21,4 +21,6 @@ public class AdministratorServiceImpl implements AdministratorService{
     public List<Teacher> updateTeacher() {
         return null;
     }
+
+
 }
