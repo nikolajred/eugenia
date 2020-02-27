@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TeacherService {
     Teacher getTeacher(Long id);
-    List<Teacher>getTeacherByInterval(Calendar start, Calendar finish);
+    List<Teacher>getTeacherBySchedule(Calendar start, Calendar finish);
     List<Teacher>getAllTeachers();
 
 }

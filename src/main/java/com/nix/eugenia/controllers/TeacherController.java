@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -31,6 +32,13 @@ public class TeacherController {
     List<Teacher> allTeachers() {
         return teacherRepository.findAll();
     }
+
+    @GetMapping("teachers/{start_time}/{finish_time}")
+    List<Teacher> getTeacherBySchedule(@PathVariable Calendar startTime, @PathVariable Calendar finishTime){
+        return teacherService.getTeacherBySchedule(startTime, finishTime);
+    }
+
+
 
 //    @GetMapping("/timetable/teacher/{id}")
 //    public Timetable getTeacherTimetableById(@PathVariable Long id)
