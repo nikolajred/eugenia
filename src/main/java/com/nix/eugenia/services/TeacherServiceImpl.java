@@ -1,12 +1,14 @@
 package com.nix.eugenia.services;
 
 import com.nix.eugenia.model.Teacher;
+import com.nix.eugenia.repositories.ScheduleRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.Interval;
-import org.joda.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 public class TeacherServiceImpl implements TeacherService{
 
     private final TeacherRepository teacherRepository;
+    private final ScheduleRepository scheduleRepository;
 
 
     @Override
@@ -23,7 +26,8 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public List<Teacher> getTeacherByInterval(LocalDateTime start, LocalDateTime finish) {
+    public List<Teacher> getTeacherByInterval(Calendar start, Calendar finish) {
+        scheduleRepository.findAll().stream().filter(schedule->start.before(start)).collect(Collectors.toList());
         return null;
     }
 

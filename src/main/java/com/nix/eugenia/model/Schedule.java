@@ -1,10 +1,8 @@
 package com.nix.eugenia.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.joda.time.Interval;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +18,16 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
+    @Column(name = "start_time")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Calendar startTime;
 
-    @Column
+    @Column(name = "finish_time")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Calendar finishTime;
 
-    @ManyToMany(mappedBy = "schedule")
-    @JsonIgnoreProperties("schedule")
+    @ManyToMany(mappedBy = "schedules")
+    @JsonIgnoreProperties("schedules")
     private List<Teacher> teachers = new ArrayList<>();
 
 
