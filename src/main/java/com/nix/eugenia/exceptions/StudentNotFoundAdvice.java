@@ -12,9 +12,9 @@ public class StudentNotFoundAdvice {
 
 
     @ResponseBody
-    @ExceptionHandler(StudentNotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(StudentNotFoundException ex) {
+    String employeeNotFoundHandler(ResourceNotFoundException ex) {
         return ex.getMessage();
     }
 }

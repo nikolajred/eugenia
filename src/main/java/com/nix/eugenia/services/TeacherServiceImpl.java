@@ -1,6 +1,5 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.exceptions.StudentNotFoundException;
 import com.nix.eugenia.model.DayOfWeek;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.TeacherRepository;

@@ -1,5 +1,6 @@
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.exceptions.ResourceNotFoundException;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.StudentRepository;
@@ -18,11 +19,12 @@ public class StudentService {
 
 
     public Student getStudent(Long id) {
-        return studentRepository.getOne(id);
+        return studentRepository.findById(id).orElseThrow(()->
+        new ResourceNotFoundException("I'm sorry but there's not student ", id));
     }
 
-    public List<Student> getAllStudents(){
-        return  studentRepository.findAll();
-        }
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
 
 }
