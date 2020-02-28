@@ -38,21 +38,23 @@ public class AdministratorService {
         studentRepository.findById(studentID).get().setCurrentTeacher(teacherRepository.getOne(teacherID));
     }
 
-    public Student addStudent(Student student) {
-        return studentRepository.save(student);
+    public void addStudent(Student student) {
+         studentRepository.findAll().add(student);
+
     }
 
     public void deleteStudent(Long studentID) {
 
-        studentRepository.deleteById(studentID);
+        studentRepository.  deleteById(studentID);
     }
 
-    public Student updateStudent(Long studentId, Long teacherId) {
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("student not found for this id : ", studentId));
+    public void updateStudent(Long studentId, Long teacherId) {
 
-        student.setCurrentTeacher(teacherRepository.findById(teacherId).get());
-        final Student updatedStudent = studentRepository.save(student);
-        return student;
+
+        teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new ResourceNotFoundException("This teacher doesnt exist", teacherId))
+                .getStudents().add(studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId)));
+
     }
 }

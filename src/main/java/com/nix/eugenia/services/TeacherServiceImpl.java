@@ -1,6 +1,7 @@
 package com.nix.eugenia.services;
 
 import com.nix.eugenia.model.DayOfWeek;
+import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,12 @@ public class TeacherServiceImpl implements TeacherService{
         return teacherRepository.findById(id).get();
     }
 
-   @Override
+    public List<Teacher> getAllTeachers() {
+        return teacherRepository.findAll();
+    }
+
+
+    @Override
     public List<Teacher> getTeacherByTimeAndDay(DayOfWeek dayOfWeek, String workDay) {
 
        //пометил NULL чтоб компилилось

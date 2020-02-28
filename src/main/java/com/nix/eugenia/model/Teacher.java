@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -33,7 +34,7 @@ public class Teacher {
     private String workTime;
     @JsonIgnoreProperties
     @OneToMany(mappedBy="currentTeacher")
-    private Set<Student> students;
+    private List<Student> students;
     private Long wage;
 
 }
