@@ -1,5 +1,6 @@
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.model.Schedule;
 import com.nix.eugenia.model.Teacher;
 
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface TeacherService {
     Teacher getTeacher(Long id);
-    List<Teacher>getTeacherBySchedule(Calendar start, Calendar finish);
+    List<Teacher>getTeacherBySchedule(Schedule startTime);
     List<Teacher>getAllTeachers();
 
 }

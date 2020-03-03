@@ -1,5 +1,6 @@
 package com.nix.eugenia.controllers;
 
+import com.nix.eugenia.model.Schedule;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.model.Timetable;
@@ -9,9 +10,7 @@ import com.nix.eugenia.repositories.TimetableRepository;
 import com.nix.eugenia.services.TeacherService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.List;
@@ -33,9 +32,9 @@ public class TeacherController {
         return teacherRepository.findAll();
     }
 
-    @GetMapping("teachers/{start_time}/{finish_time}")
-    List<Teacher> getTeacherBySchedule(@PathVariable Calendar startTime, @PathVariable Calendar finishTime){
-        return teacherService.getTeacherBySchedule(startTime, finishTime);
+    @RequestMapping(value = "/time",consumes ="aplication/json", produces= "aplication/json", method = RequestMethod.POST)
+    List<Teacher> getTeacherBySchedule(@RequestBody Schedule startTime){
+        return teacherService.getTeacherBySchedule(startTime);
     }
 
 

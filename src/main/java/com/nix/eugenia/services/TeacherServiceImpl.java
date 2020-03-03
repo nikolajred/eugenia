@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherServiceImpl implements TeacherService{
+public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final ScheduleRepository scheduleRepository;
@@ -27,12 +27,12 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
 
-   @Override
-    public List<Teacher> getTeacherBySchedule(Calendar start, Calendar finish) {
-        List<Schedule> needSchedule = scheduleRepository.findAll().stream().filter(schedule -> {
-            return start.after(schedule.getStartTime())||start.equals(schedule.getStartTime())&&
-                    finish.before(schedule.getFinishTime())||finish.equals(schedule.getFinishTime());
-        }).collect(Collectors.toList());
+    @Override
+    public List<Teacher> getTeacherBySchedule(Schedule startTime) {
+        //start.getTime();
+        List<Schedule> needSchedule = scheduleRepository.findAll().stream().filter(schedule -> startTime.getStartTime()
+                .before(schedule.getStartTime()) || startTime.getStartTime().equals(schedule.getStartTime()))
+                .collect(Collectors.toList());
 
         List<Teacher> needTeachers = teacherRepository.findAll().stream().filter(teacher ->
                 teacher.getSchedules().equals(needSchedule)).collect(Collectors.toList());
@@ -43,9 +43,6 @@ public class TeacherServiceImpl implements TeacherService{
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAll().stream().collect(Collectors.toList());
     }
-
-
-
 
 
 }
