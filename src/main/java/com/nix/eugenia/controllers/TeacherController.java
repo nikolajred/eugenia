@@ -10,9 +10,11 @@ import com.nix.eugenia.repositories.TimetableRepository;
 import com.nix.eugenia.services.TeacherService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,26 +26,18 @@ public class TeacherController {
 
     @GetMapping ("/teacher/{id}")
     public Teacher getTeacherById(@PathVariable Long id){
-        return teacherService.getTeacher(id);
+        return teacherService.getTeacherById(id);
     }
 
     @GetMapping("/teachers")
-    List<Teacher> allTeachers() {
+    List<Teacher> getAllTeachers() {
         return teacherRepository.findAll();
     }
 
-    @RequestMapping(value = "/time",consumes ="aplication/json", produces= "aplication/json", method = RequestMethod.POST)
-    List<Teacher> getTeacherBySchedule(@RequestBody Schedule startTime){
+    @RequestMapping(value = "/time",consumes ="application/json", produces= "application/json", method = RequestMethod.GET)
+    List<Teacher> getTeacherBySchedule(@DateTimeFormat Date startTime){
         return teacherService.getTeacherBySchedule(startTime);
     }
-
-
-
-//    @GetMapping("/timetable/teacher/{id}")
-//    public Timetable getTeacherTimetableById(@PathVariable Long id)
-//    {
-//        return timetableRepository.getTeacherTimetable(id);
-//    }
 
 
 

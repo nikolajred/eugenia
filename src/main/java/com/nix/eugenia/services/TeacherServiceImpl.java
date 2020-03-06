@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -22,27 +24,17 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public Teacher getTeacher(Long id) {
+    public Teacher getTeacherById(Long id) {
         return teacherRepository.findById(id).get();
     }
 
-
     @Override
-    public List<Teacher> getTeacherBySchedule(Schedule startTime) {
-        //start.getTime();
-        List<Schedule> needSchedule = scheduleRepository.findAll().stream().filter(schedule -> startTime.getStartTime()
-                .before(schedule.getStartTime()) || startTime.getStartTime().equals(schedule.getStartTime()))
-                .collect(Collectors.toList());
-
-        List<Teacher> needTeachers = teacherRepository.findAll().stream().filter(teacher ->
-                teacher.getSchedules().equals(needSchedule)).collect(Collectors.toList());
-        return needTeachers;
+    public List<Teacher> getTeacherBySchedule(Date startTime) {
+        return  teacherRepository.findAllTeachersWithSchedulStartTimeBefore(startTime).stream().collect(Collectors.toList());
     }
 
     @Override
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAll().stream().collect(Collectors.toList());
     }
-
-
 }

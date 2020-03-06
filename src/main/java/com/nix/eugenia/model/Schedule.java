@@ -3,7 +3,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -20,11 +22,11 @@ public class Schedule {
 
     @Column(name = "start_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Calendar startTime;
+    private Date startTime;
 
     @Column(name = "finish_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Calendar finishTime;
+    private Date finishTime;
 
     @ManyToMany(mappedBy = "schedules")
     @JsonIgnoreProperties("schedules")
