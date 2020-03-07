@@ -1,17 +1,13 @@
 package com.nix.eugenia.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 @Getter
 @Setter
@@ -19,6 +15,7 @@ import java.util.Set;
 @Table(name = "teacher")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Teacher {
 
     @Id
@@ -28,22 +25,20 @@ public class Teacher {
     private String name;
     @Column
     private String lastname;
-    @Column
-    private DayOfWeek dayOfWeek;
-    @Column
-    private String workTime;
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="currentTeacher", cascade = CascadeType.ALL,
-            orphanRemoval = true )
-    private List<Student> students;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnoreProperties("teachers")
+    private List<Schedule> schedules = new ArrayList<>();
 
-    private Long wage;
+    public void addSchedule(Schedule schedule) {
+        schedules.add(schedule);
+        schedule.getTeachers().add(this);
+    }
 
-}
+    public void removeSchedule(Schedule schedule) {
+        schedules.remove(schedule);
+        schedule.getTeachers().remove( this );
+    }
 
-class WorkTime {
-    String[] workTime = new String[]{"08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00",
-            "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00",
-            "20:00:00", "21:00:00"};
 
 }
+

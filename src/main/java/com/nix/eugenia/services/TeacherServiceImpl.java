@@ -1,37 +1,40 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.model.DayOfWeek;
-import com.nix.eugenia.model.Student;
+import com.nix.eugenia.model.Schedule;
 import com.nix.eugenia.model.Teacher;
+import com.nix.eugenia.repositories.ScheduleRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
+
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherServiceImpl implements TeacherService{
+public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
+    private final ScheduleRepository scheduleRepository;
+
 
     @Override
-    public Teacher getTeacher(Long id) {
+    public Teacher getTeacherById(Long id) {
         return teacherRepository.findById(id).get();
     }
 
-    public List<Teacher> getAllTeachers() {
-        return teacherRepository.findAll();
+    @Override
+    public List<Teacher> getTeacherBySchedule(Date startTime) {
+        return  teacherRepository.findAllTeachersWithSchedulStartTimeBefore(startTime).stream().collect(Collectors.toList());
     }
 
-
     @Override
-    public List<Teacher> getTeacherByTimeAndDay(DayOfWeek dayOfWeek, String workDay) {
-
-       //пометил NULL чтоб компилилось
-        Example<Teacher> sExample = null;
-        // пометил NULL чтоб компилилось
-        return null;//teacherRepository.findAll(sExample);
+    public List<Teacher> getAllTeachers() {
+        return teacherRepository.findAll().stream().collect(Collectors.toList());
     }
 }
