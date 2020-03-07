@@ -32,9 +32,11 @@ public class Teacher {
     private DayOfWeek dayOfWeek;
     @Column
     private String workTime;
-    @JsonIgnoreProperties
-    @OneToMany(mappedBy="currentTeacher")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="currentTeacher", cascade = CascadeType.ALL,
+            orphanRemoval = true )
     private List<Student> students;
+
     private Long wage;
 
 }

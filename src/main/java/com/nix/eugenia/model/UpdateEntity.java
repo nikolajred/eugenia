@@ -7,15 +7,12 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 
 public class UpdateEntity {
-
-    private Long teacherId;
-    private Long studentId;
-
+private Student student;
+private Teacher teacher;
 
 }

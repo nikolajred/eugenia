@@ -3,6 +3,7 @@ package com.nix.eugenia.services;
 import com.nix.eugenia.exceptions.ResourceNotFoundException;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
+import com.nix.eugenia.model.UpdateEntity;
 import com.nix.eugenia.repositories.StudentRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdministratorService {
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
-    private TeacherRepository teacherRepository;
+    private final TeacherRepository teacherRepository;
 
 
     public List<Teacher> addTeacher() {
@@ -39,13 +40,13 @@ public class AdministratorService {
     }
 
     public void addStudent(Student student) {
-         studentRepository.findAll().add(student);
+        studentRepository.save(student);
 
     }
 
     public void deleteStudent(Long studentID) {
 
-        studentRepository.  deleteById(studentID);
+        studentRepository.deleteById(studentID);
     }
 
     public void updateStudent(Long studentId, Long teacherId) {
@@ -57,4 +58,16 @@ public class AdministratorService {
                 .orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId)));
 
     }
+
+    public void updateStudentLessons(UpdateEntity updateEntity) {
+
+
+        Student student = studentRepository.findById(updateEntity.getStudentId())
+                .orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", updateEntity.getStudentId()));
+        student.setId(updateEntity.getStudentId());
+        student.setLessonsLeft(updateEntity.getLessonsLeft());
+        studentRepository.save(student);
+    }
+
+
 }
