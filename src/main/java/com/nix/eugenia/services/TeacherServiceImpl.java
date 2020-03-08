@@ -37,4 +37,9 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAll().stream().collect(Collectors.toList());
     }
+
+    @Override
+    public List<Teacher> getTeacherByName(String name) {
+        return teacherRepository.findAllTeacherByName(name).stream().collect(Collectors.toList());
+    }
 }

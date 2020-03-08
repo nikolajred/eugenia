@@ -13,5 +13,6 @@ public interface TeacherService {
     Teacher getTeacherById(Long id);
     List<Teacher>getTeacherBySchedule(Date startTime);
     List<Teacher>getAllTeachers();
+    List<Teacher>getTeacherByName(String name);
 
 }
