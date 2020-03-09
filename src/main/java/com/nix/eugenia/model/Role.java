@@ -1,6 +1,8 @@
 package com.nix.eugenia.model;
 import lombok.*;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -16,5 +18,7 @@ public class Role {
     private long id;
     @Column
     private String name;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
 
 }

@@ -1,6 +1,9 @@
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.exceptions.StudentNotFoundException;
+import com.nix.eugenia.exceptions.TeacherNotFoundException;
 import com.nix.eugenia.model.Schedule;
+import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.ScheduleRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
@@ -20,12 +23,12 @@ import java.util.stream.Collectors;
 public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
-    private final ScheduleRepository scheduleRepository;
 
 
     @Override
     public Teacher getTeacherById(Long id) {
-        return teacherRepository.findById(id).get();
+        return teacherRepository.findById(id)
+                .orElseThrow(() -> new TeacherNotFoundException(id));
     }
 
     @Override

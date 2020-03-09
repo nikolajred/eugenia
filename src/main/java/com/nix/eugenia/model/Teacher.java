@@ -8,14 +8,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "teacher")
 
 @Getter
 @Setter
-@Entity
-@Table(name = "teacher")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(of = {"email"})
 public class Teacher {
 
     @Id
@@ -23,9 +23,15 @@ public class Teacher {
     private long id;
     @Column
     private String name;
-    @Column
+    @Column(name = "`last_name`")
     private String lastname;
+    @Column
+    private String email;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "teacher_schedules",
+            joinColumns = @JoinColumn(name = "teachers_id"),
+            inverseJoinColumns = @JoinColumn(name = "schedules_id"))
     @JsonIgnoreProperties("teachers")
     private List<Schedule> schedules = new ArrayList<>();
 

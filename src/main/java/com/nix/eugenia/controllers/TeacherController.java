@@ -30,20 +30,19 @@ public class TeacherController {
     }
 
     @GetMapping("/teachers")
-    List<Teacher> getAllTeachers() {
-        return teacherRepository.findAll();
+    List<Teacher> getAllTeachersOfList() {
+        return teacherService.getAllTeachers();
     }
 
     @RequestMapping(value = "/startTime", method = RequestMethod.GET)
     public @ResponseBody List<Teacher> getTeacherBySchedule(@RequestParam (name = "startTime", required = false) Date startTime){
         return teacherService.getTeacherBySchedule(startTime);
     }
+
     @RequestMapping(value = "/name", method = RequestMethod.GET)
     public @ResponseBody List<Teacher> getTeacherByName(@RequestParam (name = "name", required = false) String name){
         return teacherService.getTeacherByName(name);
     }
-
-
 
 
 }

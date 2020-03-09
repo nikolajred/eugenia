@@ -30,8 +30,6 @@ public class Schedule {
 
     @ManyToMany(mappedBy = "schedules")
     @JsonIgnoreProperties("schedules")
-    private List<Teacher> teachers = new ArrayList<>();
-
-
+    private List<Teacher> teachers;
 }
 
