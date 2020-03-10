@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "teacher")
@@ -34,6 +35,18 @@ public class Teacher {
             inverseJoinColumns = @JoinColumn(name = "schedules_id"))
     @JsonIgnoreProperties("teachers")
     private List<Schedule> schedules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    private Set<Student> students ;
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
 
     public void addSchedule(Schedule schedule) {
         schedules.add(schedule);

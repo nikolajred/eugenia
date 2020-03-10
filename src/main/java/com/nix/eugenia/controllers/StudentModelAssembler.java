@@ -15,9 +15,10 @@ class StudentModelAssembler implements RepresentationModelAssembler<Student, Ent
     @Override
     public EntityModel<Student> toModel(Student student) {
 
-        return new EntityModel<>(student,
+        return null;
+                /*new EntityModel<>(student,
                 linkTo(methodOn(StudentController.class).one(student.getId())).withSelfRel(),
-                linkTo(methodOn(StudentController.class).all()).withRel("students"));
+                linkTo(methodOn(StudentController.class).all()).withRel("students"));*/
     }
 }
 

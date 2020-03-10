@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "student")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
 
@@ -28,14 +30,27 @@ public class Student {
     @Column
     private String role;
 
-    @OneToMany(mappedBy="student")
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    @JsonBackReference
+    //private Teacher teacher;
+
+    @OneToMany(mappedBy = "student")
     @JsonIgnoreProperties("student")
     private List<Timetable> timetable;
+    @Column
+    private Long lessonsLeft;
 
-    @ManyToOne
-    @JoinColumn(name="teacher_id", nullable=false, referencedColumnName = "id")
-    @JsonBackReference
-    private Teacher teacher;
+
+    public Student(String name, String role) {
+        this.name = name;
+        this.role = role;
+    }
+}
+
+
+
+
 
     /*
         public void addTeacher(Teacher teacher) {
@@ -49,11 +64,4 @@ public class Student {
         }
 
     */
-    Student() {
-    }
 
-    public Student(String name, String role) {
-        this.name = name;
-        this.role = role;
-    }
-}

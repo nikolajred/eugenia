@@ -1,33 +1,44 @@
 package com.nix.eugenia.controllers;
 
-import com.nix.eugenia.exceptions.StudentNotFoundException;
+import com.nix.eugenia.DTO.UpdateEntity;
+import com.nix.eugenia.exceptions.ResourceNotFoundException;
 import com.nix.eugenia.model.Student;
-import com.nix.eugenia.repositories.StudentRepository;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import com.nix.eugenia.services.AdministratorServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-
-public class AdministratorController {
-
-    StudentRepository studentRepository;
-    StudentController studentController;
+import javax.validation.Valid;
 
 
-  /*  @RequestMapping(value = "/edit-students", method = RequestMethod.POST)
-    public Student editStudent(@RequestParam("studentId") Long studentID, Student model, Long payment) {
+    @RestController
+    @RequiredArgsConstructor
+    public class AdministratorController {
 
-        try {
-            Student newStudent = studentRepository.getOne(studentID);
+        private final AdministratorServiceImpl administratorServiceImpl;
 
-            newStudent.payForLessons(payment);
-            studentController.replaceStudent(newStudent, studentID);
-            return newStudent;
-        } catch (Exception e) {
-            throw new StudentNotFoundException(studentID);
+
+        @PostMapping(path = "/add/students", consumes = "application/json", produces = "application/json")
+        public void addStudent(@RequestBody Student student) {
+            administratorServiceImpl.addStudent(student);
         }
 
-    }*/
-}
+
+        //TODO
+        @PutMapping(path = "/changeteacher/students", consumes = "application/json", produces = "application/json")
+        public void changeCurrentTeacher(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
+            administratorServiceImpl.changeCurrentTeacher(updateEntity.getStudent(), updateEntity.getTeacher());
+        }
+        //functional
+        @PutMapping(path = "/edit/students", consumes = "application/json", produces = "application/json")
+        public void updateStudent(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
+            administratorServiceImpl.updateStudentLessons(updateEntity.getStudent());
+        }
+
+        //functional
+        @DeleteMapping(path = "/delete/students")
+        public void deleteStudent(@Valid @RequestBody UpdateEntity updateEntity) {
+            administratorServiceImpl.deleteStudent(updateEntity.getStudent().getId());
+        }
+
+    }
+

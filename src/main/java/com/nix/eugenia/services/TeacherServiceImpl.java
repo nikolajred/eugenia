@@ -1,21 +1,14 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.exceptions.StudentNotFoundException;
 import com.nix.eugenia.exceptions.TeacherNotFoundException;
-import com.nix.eugenia.model.Schedule;
-import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
-import com.nix.eugenia.repositories.ScheduleRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
