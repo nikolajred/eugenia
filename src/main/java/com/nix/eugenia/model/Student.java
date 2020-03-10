@@ -33,7 +33,7 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     @JsonBackReference
-    //private Teacher teacher;
+    private Teacher teacher;
 
     @OneToMany(mappedBy = "student")
     @JsonIgnoreProperties("student")

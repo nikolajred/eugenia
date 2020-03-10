@@ -4,12 +4,11 @@ import com.nix.eugenia.exceptions.TeacherNotFoundException;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,16 +25,16 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public List<Teacher> getTeacherBySchedule(Date startTime) {
-        return  teacherRepository.findAllTeachersWithSchedulStartTimeBefore(startTime).stream().collect(Collectors.toList());
+        return  teacherRepository.findByStartTime(Timestamp.from(startTime.toInstant()));
     }
 
     @Override
     public List<Teacher> getAllTeachers() {
-        return teacherRepository.findAll().stream().collect(Collectors.toList());
+        return teacherRepository.findAll();
     }
 
     @Override
     public List<Teacher> getTeacherByName(String name) {
-        return teacherRepository.findAllTeacherByName(name).stream().collect(Collectors.toList());
+        return teacherRepository.findAllByName(name);
     }
 }
