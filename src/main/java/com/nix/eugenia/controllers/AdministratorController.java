@@ -10,35 +10,23 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 
-    @RestController
-    @RequiredArgsConstructor
-    public class AdministratorController {
+@RestController
+@RequiredArgsConstructor
+public class AdministratorController {
 
-        private final AdministratorServiceImpl administratorServiceImpl;
-
-
-        @PostMapping(path = "/add/students", consumes = "application/json", produces = "application/json")
-        public void addStudent(@RequestBody Student student) {
-            administratorServiceImpl.addStudent(student);
-        }
+    private final AdministratorServiceImpl administratorServiceImpl;
 
 
-        //TODO
-        @PutMapping(path = "/changeteacher/students", consumes = "application/json", produces = "application/json")
-        public void changeCurrentTeacher(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
-            administratorServiceImpl.changeCurrentTeacher(updateEntity.getStudent(), updateEntity.getTeacher());
-        }
-        //functional
-        @PutMapping(path = "/edit/students", consumes = "application/json", produces = "application/json")
-        public void updateStudent(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
-            administratorServiceImpl.updateStudentLessons(updateEntity.getStudent());
-        }
-
-        //functional
-        @DeleteMapping(path = "/delete/students")
-        public void deleteStudent(@Valid @RequestBody UpdateEntity updateEntity) {
-            administratorServiceImpl.deleteStudent(updateEntity.getStudent().getId());
-        }
-
+    @PostMapping(path = "/add/students", consumes = "application/json", produces = "application/json")
+    public void addStudent(@RequestBody Student student) {
+        administratorServiceImpl.addStudent(student);
     }
+
+    @DeleteMapping(path = "/delete/students")
+    public void deleteStudent(@Valid @RequestBody UpdateEntity updateEntity) {
+        administratorServiceImpl.deleteStudent(updateEntity.getStudent().getId());
+    }
+
+
+}
 

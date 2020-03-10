@@ -16,6 +16,7 @@ import javax.persistence.Table;
 @Data
 public class UpdateEntity {
     private Student student;
+
     private Teacher teacher;
 
 }

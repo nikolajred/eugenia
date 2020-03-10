@@ -7,10 +7,13 @@ import com.nix.eugenia.repositories.StudentRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdministratorServiceImpl implements AdministratorService{
 
     private final StudentRepository studentRepository;
@@ -30,11 +33,14 @@ public class AdministratorServiceImpl implements AdministratorService{
     public List<Teacher> updateTeacher() {
         return null;
     }
-    public void changeCurrentTeacher(Student student, Teacher teacher) {
 
+
+    public void changeCurrentTeacher(Long studentId, Long teacherId) {
+        Student student = studentRepository.findById(studentId).get();
+        Teacher teacher = teacherRepository.findById(teacherId).get();
+        student.setTeacher(teacher);
         teacher.getStudents().add(student);
         teacherRepository.save(teacher);
-
     }
 
     public void addStudent(Student student) {
@@ -47,23 +53,16 @@ public class AdministratorServiceImpl implements AdministratorService{
         studentRepository.deleteById(studentID);
     }
 
-    public void updateStudent(Long studentId, Long teacherId) {
 
 
-        teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new ResourceNotFoundException("This teacher doesnt exist", teacherId))
-                .getStudents().add(studentRepository.findById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId)));
+    public void updateStudentLessons(Long studentId, Long lessonsLeft) {
 
-    }
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId));
 
-    public void updateStudentLessons(Student student) {
+        student.setLessonsLeft((Long) student.getLessonsLeft()+lessonsLeft);
 
-        Student newStudent = studentRepository.findById(student.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", student.getId()));
-
-        student.setLessonsLeft(student.getLessonsLeft());
-        studentRepository.save(newStudent);
+        studentRepository.save(student);
     }
 
 

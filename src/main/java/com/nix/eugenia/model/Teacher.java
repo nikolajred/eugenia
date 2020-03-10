@@ -21,6 +21,7 @@ public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long id;
     @Column
     private String name;
@@ -36,17 +37,19 @@ public class Teacher {
     @JsonIgnoreProperties("teachers")
     private List<Schedule> schedules = new ArrayList<>();
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private List<Student> students;
 
-    private Set<Student> students ;
-
-    public Set<Student> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(Set<Student> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
+
+
+
 
     public void addSchedule(Schedule schedule) {
         schedules.add(schedule);
@@ -55,7 +58,7 @@ public class Teacher {
 
     public void removeSchedule(Schedule schedule) {
         schedules.remove(schedule);
-        schedule.getTeachers().remove( this );
+        schedule.getTeachers().remove(this);
     }
 
 

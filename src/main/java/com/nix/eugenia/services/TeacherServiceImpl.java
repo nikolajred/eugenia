@@ -1,6 +1,7 @@
 package com.nix.eugenia.services;
 
 import com.nix.eugenia.exceptions.TeacherNotFoundException;
+import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,10 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Teacher> getTeacherByName(String name) {
         return teacherRepository.findAllByName(name);
+    }
+
+
+    public List<Student> getStudentsByTeacherId(Long teacherId){
+        return teacherRepository.findById(teacherId).get().getStudents();
     }
 }

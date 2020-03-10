@@ -1,9 +1,11 @@
 package com.nix.eugenia.exceptions;
 
-public class ResourceNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
+public class ResourceNotFoundException extends ResponseStatusException {
     public ResourceNotFoundException(String message, Long id) {
-        super(message+" " + id + " Please go back and try again");
-        }
+        super(HttpStatus.NOT_FOUND, message + " " + id + " Please go back and try again");
     }
+}
 

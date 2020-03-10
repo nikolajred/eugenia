@@ -1,8 +1,10 @@
 package com.nix.eugenia.controllers;
 
+import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.TeacherRepository;
 import com.nix.eugenia.services.TeacherService;
+import com.nix.eugenia.services.TeacherServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherController {
 
+    private  final TeacherServiceImpl teacherServiceImpl;
     private final TeacherService teacherService;
     private final TeacherRepository teacherRepository;
 
@@ -38,6 +41,11 @@ public class TeacherController {
     @GetMapping(params = "name")
     public List<Teacher> getTeacherByName(@RequestParam(name = "name") String name) {
         return teacherService.getTeacherByName(name);
+    }
+
+    @GetMapping("/students/{id}")
+    public List<Student> getTeacherByName(@PathVariable(name = "id")  Long teacherId) {
+        return teacherServiceImpl.getStudentsByTeacherId(teacherId);
     }
 
 
