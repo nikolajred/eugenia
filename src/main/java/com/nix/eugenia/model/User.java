@@ -1,20 +1,48 @@
 package com.nix.eugenia.model;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
+import javax.persistence.*;
+import java.util.*;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"email"})
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    public Interval createRequest(int year, int month, int day, int startHour, int finishHour, int minut, int second){
-        DateTimeZone timeZone = DateTimeZone.forID("Europe/Paris");
-        DateTime start = new DateTime(year, month, day, startHour, minut, second, timeZone);
-        DateTime end = new DateTime(year, month, day, finishHour, minut, second, timeZone);
-        Interval interval = new Interval(start, end);
-        return interval;
+    @Column
+    private String email;
+
+    @Column
+    private String password;
+
+    @Column(name = "`start_time`")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startTime;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    @JsonIgnoreProperties("users")
+    private Set<Role> roles = new HashSet<>();
+
+    public void addRole(Role role) {
+        roles.add(role);
+        role.getUsers().add(this);
     }
 
-
-
-
+    public void removeRole(Role role) {
+        roles.remove(role);
+        role.getUsers().remove(this);
+    }
 }

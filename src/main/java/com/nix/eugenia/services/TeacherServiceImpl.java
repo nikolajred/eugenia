@@ -1,47 +1,52 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.model.Schedul;
+import com.nix.eugenia.exceptions.TeacherNotFoundException;
+import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
-import com.nix.eugenia.repositories.SchedulRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
+import com.nix.eugenia.structures.LessonPeriod;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.Interval;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherServiceImpl implements TeacherService{
+public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
-    private final SchedulRepository schedulRepository;
+
 
     @Override
-    public Teacher getTeacher(Long id) {
-        return teacherRepository.findById(id).get();
+    public Teacher getTeacherById(Long id) {
+        return teacherRepository.findById(id)
+                .orElseThrow(() -> new TeacherNotFoundException(id));
     }
 
     @Override
-    public List<Teacher> getTeacherByInterval(Interval interval) {
-        return null;
+    public List<Teacher> getTeacherBySchedule(Date startTime) {
+        return  teacherRepository.findByStartTime(Timestamp.from(startTime.toInstant()));
     }
 
-   /* @Override
-    public List<Teacher> getTeacherByInterval(Interval interval) {
-        List<Teacher> teachers = teacherRepository.findAll();
-        List<Schedul> schedul = schedulRepository.findAll();
-        List<Teacher> TeachersByInterval = new ArrayList<>();
-        for (Teacher teacher : teachers) {
-            for (Schedul schedules : schedul) {
-                Interval NewInterval = new Interval(schedul.getInterval());
-                if(interval.overlaps(NewInterval)){
-                    TeachersByInterval.add(teacher);
-                }
-            }
-        }
-        return TeachersByInterval;
-    }*/
+    @Override
+    public List<Teacher> getTeacherByFullSchedule(LessonPeriod lessonTime) {
+        return  teacherRepository.findByPeriod(Timestamp.from(lessonTime.getStartLesson().toInstant()), Timestamp.from(lessonTime.getEndLesson().toInstant()));
+    }
 
+    @Override
+    public List<Teacher> getAllTeachers() {
+        return teacherRepository.findAll();
+    }
+
+    @Override
+    public List<Teacher> getTeacherByName(String name) {
+        return teacherRepository.findAllByName(name);
+    }
+
+
+    public List<Student> getStudentsByTeacherId(Long teacherId){
+        return teacherRepository.findById(teacherId).get().getStudents();
+    }
 }
