@@ -50,7 +50,6 @@ public class Teacher {
 
 
 
-
     public void addSchedule(Schedule schedule) {
         schedules.add(schedule);
         schedule.getTeachers().add(this);

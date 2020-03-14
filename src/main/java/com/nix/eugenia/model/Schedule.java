@@ -1,9 +1,9 @@
 package com.nix.eugenia.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nix.eugenia.structures.LessonPeriod;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,5 +31,12 @@ public class Schedule {
     @ManyToMany(mappedBy = "schedules")
     @JsonIgnoreProperties("schedules")
     private List<Teacher> teachers = new ArrayList<>();
+
+    public Schedule(LessonPeriod lessonPeriod, List<Teacher> teachers){
+        this.startTime = lessonPeriod.getStartLesson();
+        this.finishTime = lessonPeriod.getEndLesson();
+        this.teachers = teachers;
+
+    }
 }
 

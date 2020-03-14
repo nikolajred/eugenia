@@ -14,6 +14,10 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     @Query("SELECT t FROM Teacher t JOIN t.schedules s WHERE s.startTime >= :startTime ORDER BY s.startTime")
     List<Teacher> findByStartTime(Timestamp startTime);
 
+    @Query("SELECT '* ' FROM Teacher t JOIN t.schedules s WHERE s.startTime = :startTime and s.finishTime = :finishTime ORDER BY s.startTime, s.finishTime")
+    List<Teacher> findByPeriod(Timestamp startTime, Timestamp finishTime);
+
+
     List<Teacher> findAllByName(String name);
 
 }

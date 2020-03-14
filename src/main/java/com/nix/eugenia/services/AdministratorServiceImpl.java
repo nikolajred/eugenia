@@ -1,14 +1,18 @@
 package com.nix.eugenia.services;
 
 import com.nix.eugenia.exceptions.ResourceNotFoundException;
+import com.nix.eugenia.model.Schedule;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
+import com.nix.eugenia.model.Timetable;
 import com.nix.eugenia.repositories.StudentRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
+import com.nix.eugenia.structures.LessonPeriod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,8 +21,9 @@ import java.util.List;
 public class AdministratorServiceImpl implements AdministratorService{
 
     private final StudentRepository studentRepository;
-
+    private final StudentService studentService;
     private final TeacherRepository teacherRepository;
+    private final TeacherService teacherService;
     @Override
     public List<Teacher> addTeacher() {
         return null;
@@ -32,6 +37,27 @@ public class AdministratorServiceImpl implements AdministratorService{
     @Override
     public List<Teacher> updateTeacher() {
         return null;
+    }
+
+    @Override
+    public void setStudentTimetable(Long studentId, List<LessonPeriod> lessonPeriods) {
+        Student student = studentRepository.findById(studentId).get();
+        List<Timetable> timetables = new ArrayList<>();
+        lessonPeriods.forEach((s) -> timetables.add(new Timetable(s, studentService.getStudentsByTimeTable(s))));
+        student.setTimetables(timetables);
+        Teacher teacher = student.getTeacher();
+        List<Schedule> schedules = new ArrayList<>();
+        lessonPeriods.forEach((s) -> schedules.add(new Schedule(s, teacherService.getTeacherByFullSchedule(s))));
+        teacher.setSchedules(schedules);
+        studentRepository.save(student);
+        teacherRepository.save(teacher);
+    }
+
+    @Override
+    public void addTeacherToStudent(Long studentId, Long teacherId) {
+        Student student = studentRepository.findById(studentId).get();
+        student.setTeacher(teacherRepository.findById(teacherId).get());
+        studentRepository.save(student);
     }
 
 

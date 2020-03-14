@@ -35,11 +35,17 @@ public class Student {
     @JsonBackReference
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "student")
-    @JsonIgnoreProperties("student")
-    private List<Timetable> timetable;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "students_timetables",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "timetables_id"))
+    @JsonIgnoreProperties("teachers")
+    private List<Timetable> timetables = new ArrayList<>();
+
     @Column
     private Long lessonsLeft;
+
 
 
     public Student(String name, String role) {

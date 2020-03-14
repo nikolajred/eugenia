@@ -4,6 +4,7 @@ import com.nix.eugenia.exceptions.TeacherNotFoundException;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.TeacherRepository;
+import com.nix.eugenia.structures.LessonPeriod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,11 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Teacher> getTeacherBySchedule(Date startTime) {
         return  teacherRepository.findByStartTime(Timestamp.from(startTime.toInstant()));
+    }
+
+    @Override
+    public List<Teacher> getTeacherByFullSchedule(LessonPeriod lessonTime) {
+        return  teacherRepository.findByPeriod(Timestamp.from(lessonTime.getStartLesson().toInstant()), Timestamp.from(lessonTime.getEndLesson().toInstant()));
     }
 
     @Override
