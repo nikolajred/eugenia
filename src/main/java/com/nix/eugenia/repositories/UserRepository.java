@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<User, Long> {
 
     User getById(long id);
 

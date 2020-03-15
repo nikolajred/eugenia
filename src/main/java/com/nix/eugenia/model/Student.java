@@ -47,7 +47,6 @@ public class Student {
     private Long lessonsLeft;
 
 
-
     public Student(String name, String role) {
         this.name = name;
         this.role = role;

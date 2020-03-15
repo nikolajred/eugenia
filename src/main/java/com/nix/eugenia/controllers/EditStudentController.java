@@ -2,6 +2,7 @@ package com.nix.eugenia.controllers;
 
 import com.nix.eugenia.DTO.UpdateEntity;
 import com.nix.eugenia.exceptions.ResourceNotFoundException;
+import com.nix.eugenia.services.AdministratorService;
 import com.nix.eugenia.services.AdministratorServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,23 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 
-
 @RestController
 @RequiredArgsConstructor
 public class EditStudentController {
 
-    private final AdministratorServiceImpl administratorServiceImpl;
+    private final AdministratorService administratorService;
 
     @PutMapping(path = "/edit/lessons/students", consumes = "application/json", produces = "application/json")
-    public void updateStudentLessons(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
-        administratorServiceImpl.updateStudentLessons(updateEntity.getStudent().getId(), updateEntity.getStudent().getLessonsLeft());
+    public void updateStudentLessons(@Valid @RequestBody UpdateEntity updateEntity) throws ResourceNotFoundException {
+        administratorService.updateStudentLessons(updateEntity.getStudent().getId(), updateEntity.getStudent().getLessonsLeft());
     }
 
 
     //functional
     @PutMapping(path = "/edit/changeteacher/students", consumes = "application/json", produces = "application/json")
-    public void changeCurrentTeacher(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
-        administratorServiceImpl.changeCurrentTeacher(updateEntity.getStudent().getId(), updateEntity.getTeacher().getId());
+    public void changeCurrentTeacher(@Valid @RequestBody UpdateEntity updateEntity) throws ResourceNotFoundException {
+        administratorService.changeCurrentTeacher(updateEntity.getStudent().getId(), updateEntity.getTeacher().getId());
     }
 
 }

@@ -1,6 +1,8 @@
 package com.nix.eugenia.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +16,7 @@ import java.util.Set;
 @Table(name = "role")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of ={"name"})
+@EqualsAndHashCode(of = {"name"})
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

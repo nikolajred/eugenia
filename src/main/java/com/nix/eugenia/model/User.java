@@ -9,10 +9,10 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "usr")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"email"})
+//@EqualsAndHashCode(of = {"email"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class User {
     @Column
     private String password;
 
-    @Column(name = "`start_time`")
+    @Column(name = "start_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
 
