@@ -14,9 +14,8 @@ import java.util.List;
 
 
 @Repository
-
 public interface UserRepository extends JpaRepository<User, Long>{
 
-    User getById(long id);
+    User getById(Long id);
 
 }
