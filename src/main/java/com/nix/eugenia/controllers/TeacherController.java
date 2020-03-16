@@ -17,9 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherController {
 
-    private  final TeacherServiceImpl teacherServiceImpl;
     private final TeacherService teacherService;
-    private final TeacherRepository teacherRepository;
 
     @GetMapping("/{id}")
     public Teacher getTeacherById(@PathVariable Long id) {
@@ -45,7 +43,7 @@ public class TeacherController {
 
     @GetMapping("/students/{id}")
     public List<Student> getTeacherByName(@PathVariable(name = "id")  Long teacherId) {
-        return teacherServiceImpl.getStudentsByTeacherId(teacherId);
+        return teacherService.getStudentsByTeacherId(teacherId);
     }
 
 

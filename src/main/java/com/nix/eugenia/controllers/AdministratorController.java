@@ -22,12 +22,12 @@ public class AdministratorController {
     private final AdministratorService administratorService;
 
 
-    @PostMapping(path = "/students/add", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/add/students", consumes = "application/json", produces = "application/json")
     public void addStudent(@RequestBody Student student) {
         administratorServiceImpl.addStudent(student);
     }
 
-    @DeleteMapping(path = "/students/delete")
+    @DeleteMapping(path = "/delete/students")
     public void deleteStudent(@Valid @RequestBody UpdateEntity updateEntity) {
         administratorServiceImpl.deleteStudent(updateEntity.getStudent().getId());
     }
@@ -36,7 +36,7 @@ public class AdministratorController {
     public void addStudent(@PathVariable Long id, @RequestBody List<LessonPeriod> lessonTimes) {
         administratorService.setStudentTimetable(id, lessonTimes);
     }
-    @PostMapping(path = "/teacher/add/{teacherId}/to/students/{studentId}")
+    @PostMapping(path = "/add/teacher/{teacherId}/to/students/{studentId}")
     public void addTeacherToStudentById(@PathVariable Long studentId, @PathVariable Long teacherId){
             administratorService.addTeacherToStudent(studentId, teacherId);
     }
