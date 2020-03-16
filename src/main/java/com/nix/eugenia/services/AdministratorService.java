@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AdministratorService {
 
-    List<Teacher> addTeacher();
+    void addTeacher(Teacher teacher);
 
-    List<Teacher> removeTeacher();
+   void deleteTeacher(Long teacherId);
 
     List<Teacher> updateTeacher();
 

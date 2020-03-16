@@ -33,13 +33,13 @@ public class AdministratorServiceImpl implements AdministratorService {
     private final ScheduleRepository scheduleRepository;
 
     @Override
-    public List<Teacher> addTeacher() {
-        return null;
+    public void addTeacher(Teacher teacher) {
+        teacherRepository.save(teacher);
     }
 
     @Override
-    public List<Teacher> removeTeacher() {
-        return null;
+    public void deleteTeacher(Long teacherId) {
+        teacherRepository.deleteById(teacherId);
     }
 
 

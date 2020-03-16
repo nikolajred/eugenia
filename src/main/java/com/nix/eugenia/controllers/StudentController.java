@@ -28,7 +28,7 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
-    @GetMapping("timetable/students/{id}")
+    @GetMapping("students/{id}/timetable")
     public List<Timetable> getStudentTimetableById(@PathVariable Long id){return studentService.getStudentTimetable(id);}
 
 

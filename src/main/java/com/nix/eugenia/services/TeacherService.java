@@ -21,4 +21,6 @@ public interface TeacherService {
 
     List<Student> getStudentsByTeacherId(Long teacherId);
 
+
+    void addSchedule(Long id, List<LessonPeriod> lessonTimeList);
 }
