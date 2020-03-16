@@ -9,23 +9,25 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @RestController
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user/{id}")
-    public UserDTO getUserById(@PathVariable long id) {
+    @GetMapping("/{id}")
+    public UserDTO getUserById(@PathVariable Long id) {
         User user = userService.getUser(id);
         return toDTO(user);
     }
     private UserDTO toDTO(User user){
-        Set<RoleDTO> roleDTOS = toDTOs(user.getRoles());
+        List<RoleDTO> roleDTOS = toDTOs(user.getRoles());
         return UserDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -34,8 +36,8 @@ public class UserController {
                 .build();
     }
 
-    private Set<RoleDTO> toDTOs(Set<Role> role){
-        return role.stream().map(role1 -> toDTO(role1)).collect(Collectors.toSet());
+    private List<RoleDTO> toDTOs(List<Role> role){
+        return role.stream().map(role1 -> toDTO(role1)).collect(Collectors.toList());
     }
     private RoleDTO toDTO(Role role){
         return RoleDTO.builder()

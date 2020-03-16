@@ -1,6 +1,9 @@
 package com.nix.eugenia.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nix.eugenia.structures.LessonPeriod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +11,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -24,18 +28,27 @@ public class Timetable {
     private long id;
 
 
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startLesson;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Calendar endLesson;
+    private Date endLesson;
 
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Calendar startLesson;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private Student student;
+
+    @ManyToMany(mappedBy = "timetables")
+    @JsonIgnoreProperties("timetables")
+    @JsonBackReference
+    private List<Student> students;
+
+    public Timetable(LessonPeriod lessonPeriod, List<Student> students){
+        this.startLesson = lessonPeriod.getStartLesson();
+        this.endLesson = lessonPeriod.getEndLesson();
+        this.students = students;
+
+    }
 
 
 

@@ -4,5 +4,5 @@ import com.nix.eugenia.model.User;
 
 public interface UserService {
 
-    User getUser(long id);
+    User getUser(Long id);
 }

@@ -5,6 +5,7 @@ import lombok.*;
 
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -14,9 +15,9 @@ import java.util.Set;
 @AllArgsConstructor
 
 public class UserDTO {
-    private long id;
+    private Long id;
     private String email;
     private String password;
     private Date startTime;
-    private Set<RoleDTO> roles;
+    private List<RoleDTO> roles;
 }

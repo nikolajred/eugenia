@@ -31,10 +31,10 @@ public class User {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_roles",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     @JsonIgnoreProperties("users")
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles = new LinkedList<>();
 
     public void addRole(Role role) {
         roles.add(role);

@@ -1,28 +1,15 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.exceptions.ResourceNotFoundException;
 import com.nix.eugenia.model.Student;
-import com.nix.eugenia.repositories.StudentRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.nix.eugenia.structures.LessonPeriod;
 
 import java.util.List;
 
+public interface StudentService {
 
-@Service
-@RequiredArgsConstructor
-public class StudentService {
+    public Student getStudent(Long id);
+    public List<Student> getAllStudents();
+    List<Student> getStudentsByTimeTable(LessonPeriod lessonPeriod);
 
-    private final StudentRepository studentRepository;
-
-
-    public Student getStudent(Long id) {
-        return studentRepository.findById(id).orElseThrow(()->
-                new ResourceNotFoundException("I'm sorry but there's not student ", id));
-    }
-
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
-    }
 
 }
