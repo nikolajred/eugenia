@@ -9,14 +9,14 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "usr")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"email"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private String email;

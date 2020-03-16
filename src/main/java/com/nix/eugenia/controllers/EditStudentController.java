@@ -18,14 +18,14 @@ public class EditStudentController {
 
     private final AdministratorServiceImpl administratorServiceImpl;
 
-    @PutMapping(path = "/edit/lessons/students", consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/students/edit/lessons", consumes = "application/json", produces = "application/json")
     public void updateStudentLessons(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
         administratorServiceImpl.updateStudentLessons(updateEntity.getStudent().getId(), updateEntity.getStudent().getLessonsLeft());
     }
 
 
     //functional
-    @PutMapping(path = "/edit/changeteacher/students", consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "students/edit/changeteacher", consumes = "application/json", produces = "application/json")
     public void changeCurrentTeacher(@Valid @RequestBody UpdateEntity updateEntity ) throws ResourceNotFoundException {
         administratorServiceImpl.changeCurrentTeacher(updateEntity.getStudent().getId(), updateEntity.getTeacher().getId());
     }
