@@ -28,5 +28,7 @@ public interface AdministratorService {
 
 //    void changeStudentTimetable(Long studentId, LessonPeriod lessonPeriod, LessonPeriod newLessonPeriod);
 
+//    void deleteStudentTimetables(Long studentId);
+
 
 }
