@@ -5,18 +5,17 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
-
+@Data
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "usr")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"email"})
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class User extends BaseEntity{
+    @Column
+    private String username;
 
     @Column
     private String email;

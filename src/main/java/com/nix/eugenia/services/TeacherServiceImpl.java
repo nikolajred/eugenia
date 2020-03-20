@@ -41,7 +41,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<Teacher> getTeacherByName(String name) {
+    public List<Teacher> getTeacherByName(String name) throws TeacherNotFoundException{
         return teacherRepository.findAllByName(name);
     }
 

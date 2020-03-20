@@ -4,7 +4,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.*;
 
-
+@Data
 @Getter
 @Setter
 @Entity
@@ -12,16 +12,19 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of ={"name"})
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Role extends BaseEntity{
     @Column
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles" , fetch = FetchType.LAZY)
     @JsonIgnoreProperties("roles")
     private List<User> users = new LinkedList<>();
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id: " + super.getId() + ", " +
+                "name: " + name + "}";
+    }
 
 }
