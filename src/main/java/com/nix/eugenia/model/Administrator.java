@@ -17,9 +17,7 @@ public class Administrator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
-    private String name;
-    @Column
-    private String lastname;
+    private String username;
     @Column
     private String login;
     @Column

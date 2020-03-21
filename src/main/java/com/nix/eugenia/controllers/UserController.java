@@ -1,49 +1,37 @@
 package com.nix.eugenia.controllers;
 
-import com.nix.eugenia.DTO.RoleDTO;
-import com.nix.eugenia.DTO.UserDTO;
-import com.nix.eugenia.model.Role;
+import com.nix.eugenia.DTO.UserDto;
 import com.nix.eugenia.model.User;
 import com.nix.eugenia.services.UserService;
-import lombok.RequiredArgsConstructor;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/users")
-@RequiredArgsConstructor
+@RequestMapping(value = "/api/users/")
 public class UserController {
-
     private final UserService userService;
 
-    @GetMapping("/{id}")
-    public UserDTO getUserById(@PathVariable Long id) {
-        User user = userService.getUser(id);
-        return toDTO(user);
-    }
-    private UserDTO toDTO(User user){
-        List<RoleDTO> roleDTOS = toDTOs(user.getRoles());
-        return UserDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .startTime(user.getStartTime())
-                .roles(roleDTOS)
-                .build();
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    private List<RoleDTO> toDTOs(List<Role> role){
-        return role.stream().map(role1 -> toDTO(role1)).collect(Collectors.toList());
-    }
-    private RoleDTO toDTO(Role role){
-        return RoleDTO.builder()
-                .id(role.getId())
-                .name(role.getName())
-                .build();
-    }
+    @GetMapping(value = "{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Long id){
+        User user = userService.findById(id);
 
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        UserDto result = UserDto.fromUser(user);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

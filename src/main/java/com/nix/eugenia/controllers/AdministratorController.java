@@ -1,26 +1,37 @@
 package com.nix.eugenia.controllers;
 
+import com.nix.eugenia.DTO.AdminUserDto;
 import com.nix.eugenia.DTO.UpdateEntity;
 import com.nix.eugenia.model.Student;
+import com.nix.eugenia.model.User;
 import com.nix.eugenia.services.AdministratorService;
 import com.nix.eugenia.services.AdministratorServiceImpl;
+import com.nix.eugenia.services.UserService;
 import com.nix.eugenia.structures.LessonPeriod;
-import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.AllArgsConstructor;
+;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PostUpdate;
 import javax.validation.Valid;
 import java.util.List;
 
 
 @RestController
-@RequiredArgsConstructor
+@RequestMapping(value = "/api/admin/")
 public class AdministratorController {
 
     private final AdministratorServiceImpl administratorServiceImpl;
     private final AdministratorService administratorService;
-
+    private final UserService userService;
+    @Autowired
+    public AdministratorController(AdministratorServiceImpl administratorServiceImpl, AdministratorService administratorService, UserService userService) {
+        this.administratorServiceImpl = administratorServiceImpl;
+        this.administratorService = administratorService;
+        this.userService = userService;
+    }
 
     @PostMapping(path = "/add/students", consumes = "application/json", produces = "application/json")
     public void addStudent(@RequestBody Student student) {
@@ -40,9 +51,18 @@ public class AdministratorController {
     public void addTeacherToStudentById(@PathVariable Long studentId, @PathVariable Long teacherId){
             administratorService.addTeacherToStudent(studentId, teacherId);
     }
+    @GetMapping(value = "users/{id}")
+    public ResponseEntity<AdminUserDto> getUserById(@PathVariable(name = "id") Long id) {
+        User user = userService.findById(id);
 
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
+        AdminUserDto result = AdminUserDto.fromUser(user);
 
-//[{"startLesson":"2020-10-22'T'10:00", "endLesson":"2020-10-22'T'11:00"}, {"startLesson":"2020-10-25'T'10:00", "endLesson":"2020-10-25'T'11:00"}]
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }
 
