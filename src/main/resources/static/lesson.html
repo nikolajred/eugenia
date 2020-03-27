@@ -19,7 +19,18 @@
 
 <input type="button" onclick="connectToVideo()"  value="Connect to video">
 
-<script> function connectToVideo() { document.getElementById('video').src = "https://meet.jit.si/vadym"; } </script>
+<script> function connectToVideo(name) { document.getElementById('video').src = "https://meet.jit.si/"+name; } </script>
+
+<input type="text" placeholder="Type something..." id="myInput">
+<button type="button" onclick="getInputValue();">Get Value</button>
+
+<script>
+        function getInputValue(){
+            // Selecting the input element and get its value
+            var inputVal = document.getElementById("myInput").value;
+            connectToVideo(inputVal)
+        }
+    </script>
 
 
 
