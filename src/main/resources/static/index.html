@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home page</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://meet.jit.si/external_api.js"></script>
+</head>
+<body>
+
+<button onclick="myFunction()">Click me</button>
+
+<p id="demo"></p>
+
+<p>A function is triggered when the button is clicked. The function outputs some text in a p element with id="demo".</p>
+
+
+<script src="https://meet.jit.si/external_api.js"></script>
+<script>
+function myFunction(){
+
+
+        var meetingRoomName = prompt("whats the name");
+        // Call APi an dget full user details here
+            var domain = "meet.jit.si";
+            var options = {
+                roomName: meetingRoomName,
+                width: 350,
+                height: 350,
+                parent: undefined,
+                configOverwrite: {},
+                interfaceConfigOverwrite: {
+                    filmStripOnly: false
+                }
+            }
+
+            var api = new JitsiMeetExternalAPI(domain, options);
+            api.executeCommand('displayName', userName);
+}
+    </script>
+</body>
+</html>

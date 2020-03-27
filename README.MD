@@ -37,6 +37,15 @@ end of teacher
 --------------------------------------------------------------------------------------------
 
 Student
+to see all students 
+
+    GET
+http://localhost:8080/students
+
+
+to see a specific student 
+http://localhost:8080/students/{id}
+if none exist "sorry student {id} doesnt exist "
 
 
 to add a student :
@@ -52,7 +61,34 @@ Expected request example:
 	}
 
 
+to edit a student:
+    PUT
+/students/edit/changeteacher
+    Expected request example:
+{
+	"student":{
+		"id":1
+	},
+	"teacher":{
+		"id":4
+	}
+}
+otherwise 404 NOT_FOUND "This teacher doesn't exist 2 Please go back and try again"
+or 404 NOT_FOUND "This student doesn't exist 2 Please go back and try again"
 
+
+to set lessonsLeft
+    endpoint :
+    localhost:8080/students/edit/lessons
+    PUT
+/students/add
+  Expected request example:
+{
+	"student":{
+		"id":1,
+		"lessonsLeft" :20
+	}
+}
 
 end of Student
 ___________________________________________________________________________________
@@ -65,23 +101,3 @@ to add a schedule
 
 end of schedule 
 -----------------------------------------
-
-create self-destructing message.
-
-Expected request body example:
-Response body example:
-
-Response status should be 201 CREATED
-
-GET /{uuid}
-
-
-Expected response body example:
-
-{
-  "text": "shared secret"
-}
-DELETE /{uuid}
-
-Remove (drop) self-destructing message. Response body should be empty
-

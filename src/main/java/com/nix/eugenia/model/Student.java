@@ -44,7 +44,7 @@ public class Student {
     private List<Timetable> timetables = new ArrayList<>();
 
     @Column
-    private Long lessonsLeft;
+    private Long lessonsLeft ;
 
 
     public Student(String name, String role) {
