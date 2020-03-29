@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "administrator")
 @Getter
@@ -23,6 +24,8 @@ public class Administrator {
     private String login;
     @Column
     private String password;
+
+
 
 
 }

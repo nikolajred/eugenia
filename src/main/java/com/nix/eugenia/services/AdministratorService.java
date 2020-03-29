@@ -1,34 +1,21 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
-import com.nix.eugenia.structures.LessonPeriod;
+import com.nix.eugenia.model.TimePeriod;
+import com.nix.eugenia.model.Timetable;
 
 import java.util.List;
 
 public interface AdministratorService {
 
-    void addTeacher(Teacher teacher);
 
-   void deleteTeacher(Long teacherId);
-
+    List<Teacher> addTeacher();
+    List<Teacher> removeTeacher();
     List<Teacher> updateTeacher();
-
-    void setStudentTimetable(Long studentId, List<LessonPeriod> lessonTimeList);
-
+    void setStudentTimetable(Long studentId, List<TimePeriod> lessonTimes);
     void addTeacherToStudent(Long studentId, Long teacherId);
-
-    void addStudent(Student student);
-
-    void deleteStudent(Long studentID);
-
-    void updateStudentLessons(Long studentId, Long lessonsLeft);
-
-    void changeCurrentTeacher(Long studentId, Long teacherId);
-
-//    void changeStudentTimetable(Long studentId, LessonPeriod lessonPeriod, LessonPeriod newLessonPeriod);
-
-//    void deleteStudentTimetables(Long studentId);
+    void setTeacherSchedule(Long teacherId, List<TimePeriod> workingTimes);
+    void deleteTeacherSchedule(Long teacherId, TimePeriod workingTimes);
 
 
 }

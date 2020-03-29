@@ -2,14 +2,12 @@ package com.nix.eugenia.controllers;
 
 import com.nix.eugenia.DTO.UpdateEntity;
 import com.nix.eugenia.model.Student;
+import com.nix.eugenia.model.Teacher;
+import com.nix.eugenia.model.TimePeriod;
 import com.nix.eugenia.services.AdministratorService;
 import com.nix.eugenia.services.AdministratorServiceImpl;
-import com.nix.eugenia.structures.LessonPeriod;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.PostUpdate;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class AdministratorController {
     private final AdministratorService administratorService;
 
 
-    @PostMapping(path = "/students/add", consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/students/add", consumes = "application/json", produces = "application/json")
     public void addStudent(@RequestBody Student student) {
         administratorServiceImpl.addStudent(student);
     }
@@ -32,13 +30,23 @@ public class AdministratorController {
         administratorServiceImpl.deleteStudent(updateEntity.getStudent().getId());
     }
 
-    @PostMapping(path = "/students/{id}/add/timetable", consumes = "application/json", produces = "application/json")
-    public void addStudent(@PathVariable Long id, @RequestBody List<LessonPeriod> lessonTimes) {
+    @PutMapping(path = "/student/{id}/add/timetable", consumes = "application/json", produces = "application/json")
+    public void addStudentTimetable(@PathVariable Long id, @RequestBody List<TimePeriod> lessonTimes) {
         administratorService.setStudentTimetable(id, lessonTimes);
     }
-    @PostMapping(path = "teachers/{teacherId}/add/to/students/{studentId}")
+    @PutMapping(path = "/teacher/add/{teacherId}/to/students/{studentId}")
     public void addTeacherToStudentById(@PathVariable Long studentId, @PathVariable Long teacherId){
             administratorService.addTeacherToStudent(studentId, teacherId);
+    }
+
+    @PutMapping("teacher/{id}/schedule/add")
+    public void addTeacherSchedule(@PathVariable Long id, @RequestBody List<TimePeriod> lessonTimes) {
+        administratorService.setTeacherSchedule(id, lessonTimes);
+    }
+
+    @PutMapping("teacher/{id}/schedule/delete")
+    public void deleteTeacherSchedule(@PathVariable Long id, @RequestBody TimePeriod lessonTimes) {
+        administratorService.deleteTeacherSchedule(id, lessonTimes);
     }
 
 

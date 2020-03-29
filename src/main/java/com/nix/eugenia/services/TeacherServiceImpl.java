@@ -1,28 +1,24 @@
-
 package com.nix.eugenia.services;
 
 import com.nix.eugenia.exceptions.TeacherNotFoundException;
 import com.nix.eugenia.model.Schedule;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
-import com.nix.eugenia.repositories.ScheduleRepository;
+import com.nix.eugenia.model.TimePeriod;
 import com.nix.eugenia.repositories.TeacherRepository;
-import com.nix.eugenia.structures.LessonPeriod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
-    private final ScheduleRepository scheduleRepository;
 
 
     @Override
@@ -32,10 +28,15 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<Teacher> getTeacherBySchedule(Date startTime) {
-        return teacherRepository.findTeachersByStartTime(Timestamp.from(startTime.toInstant()));
+    public List<Teacher> getTeacherByStartSchedule(Date startTime) {
+        return teacherRepository.findAll().stream().filter(teacher -> teacher.getSchedules()
+                .stream().anyMatch(timetable -> timetable.getTimePeriod().getStartTime().equals(startTime))).collect(Collectors.toList());
     }
 
+//    @Override
+//    public List<Teacher> getTeacherByFullSchedule(Schedule lessonTime) {
+//        return  teacherRepository.findByPeriod(Timestamp.from(lessonTime.getTimePeriod().getStartTime().toInstant()), Timestamp.from(lessonTime.getTimePeriod().getFinishTime().toInstant()));
+//    }
 
     @Override
     public List<Teacher> getAllTeachers() {
@@ -48,22 +49,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<Student> getStudentsByTeacherId(Long teacherId) {
-        return teacherRepository.findById(teacherId).get().getStudents();
+    public List<Teacher> getTeacherBySchedule(TimePeriod timePeriod) {
+        return teacherRepository.findAll().stream().filter(teacher -> teacher.getSchedules()
+                .stream().anyMatch(schedules -> schedules.getTimePeriod().getId() == timePeriod.getId())).collect(Collectors.toList());
     }
 
-    @Override
-    public void addSchedule(Long id, List<LessonPeriod> lessonTimeList) {
 
-        Teacher newTeacher = teacherRepository.findById(id).get();
-
-        List<Schedule> updatedSchedule = new ArrayList<>();
-
-        updatedSchedule.addAll( newTeacher.getSchedules());
-        //updatedSchedule.addAll( teacher.getSchedules());
-        newTeacher.setSchedules(updatedSchedule);
-
-        teacherRepository.save(newTeacher);
-
+    public List<Student> getStudentsByTeacherId(Long teacherId){
+        return teacherRepository.findById(teacherId).get().getStudents();
     }
 }

@@ -1,25 +1,16 @@
 package com.nix.eugenia.services;
 
-import com.nix.eugenia.exceptions.ClientRequestException;
+import com.nix.eugenia.exceptions.BadRequestException;
 import com.nix.eugenia.exceptions.ResourceNotFoundException;
-import com.nix.eugenia.model.Schedule;
-import com.nix.eugenia.model.Student;
-import com.nix.eugenia.model.Teacher;
-import com.nix.eugenia.model.Timetable;
-import com.nix.eugenia.repositories.ScheduleRepository;
+import com.nix.eugenia.model.*;
 import com.nix.eugenia.repositories.StudentRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
-import com.nix.eugenia.repositories.TimetableRepository;
-import com.nix.eugenia.structures.LessonPeriod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,17 +20,16 @@ public class AdministratorServiceImpl implements AdministratorService {
     private final StudentRepository studentRepository;
     private final StudentService studentService;
     private final TeacherRepository teacherRepository;
-    private final TimetableRepository timetableRepository;
-    private final ScheduleRepository scheduleRepository;
+    private final TeacherService teacherService;
 
     @Override
-    public void addTeacher(Teacher teacher) {
-        teacherRepository.save(teacher);
+    public List<Teacher> addTeacher() {
+        return null;
     }
 
     @Override
-    public void deleteTeacher(Long teacherId) {
-        teacherRepository.deleteById(teacherId);
+    public List<Teacher> removeTeacher() {
+        return null;
     }
 
 
@@ -52,123 +42,115 @@ public class AdministratorServiceImpl implements AdministratorService {
     }
 
     @Override
-    public void setStudentTimetable(Long studentId, List<LessonPeriod> lessonPeriods) {
-        if (lessonPeriods.size() == 0) throw new ClientRequestException("timetable can`t be empty");
-        Student student = studentRepository.findById(studentId).
-                orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId));
+    public void setStudentTimetable(Long studentId, List<TimePeriod> lessonTimes) {
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId));
         Teacher teacher = student.getTeacher();
-        if (teacher == null) {
-            throw new ResourceNotFoundException("Student " + studentId + " doesnt have a teacher");
-        }
-        List<Schedule> schedules = teacher.getSchedules();
-        List<Timetable> timetables = student.getTimetables();
-        for (LessonPeriod lessonPeriod : lessonPeriods) {
-            if (studentService.findStudentByTouchingPeriod(lessonPeriod).stream()
-                    .anyMatch((s) -> s.getTeacher().getId() == teacher.getId())) {
-                throw new ClientRequestException(lessonPeriod.toString() + "is not available");
+        if (teacher == null) throw new ResourceNotFoundException("This student doesn`t have a teacher", studentId);
+        for (TimePeriod lessonTime : lessonTimes) {
+            if (!teacher.isLessonInWorkingTime(lessonTime)) {
+                throw new BadRequestException("Lesson time " + lessonTime + " is not teacher`s working time");
             }
-            if (studentService.getStudentsByTimeTable(lessonPeriod).size() == 0) {
-                timetables.add(new Timetable(lessonPeriod));
-                schedules.add(new Schedule(lessonPeriod));
-            } else {
-                if (studentService.findStudentByTouchingPeriod(lessonPeriod).stream()
-                        .anyMatch((s) -> s.getTeacher().getId() == teacher.getId())) {
-                    throw new ClientRequestException(lessonPeriod.toString() + "is not available");
+        }
+        List<Timetable> timetables = new ArrayList<>(student.getTimetables());
+        for (Student stud : teacher.getStudents()) {
+            for (TimePeriod lessonTime : lessonTimes) {
+                if (timetables.isEmpty()) {
+                    timetables.add(new Timetable(lessonTime, studentService.getStudentByTimeTable(lessonTime)));
+                    continue;
                 }
-                timetables.add(new Timetable(timetableRepository.findTimetableByPeriod(
-                        Timestamp.from(lessonPeriod.getStartLesson().toInstant()),
-                        Timestamp.from(lessonPeriod.getEndLesson().toInstant()))));
-                schedules.add(new Schedule(scheduleRepository.findScheduleByPeriod(
-                        Timestamp.from(lessonPeriod.getStartLesson().toInstant()),
-                        Timestamp.from(lessonPeriod.getEndLesson().toInstant()))));
+                for (Timetable timetable : stud.getTimetables()) {
+                    if (lessonTime.isPeriodsCrosses(timetable.getTimePeriod())) {
+                        throw new BadRequestException("Lesson time " + lessonTime + " is not available");
+                    }
+                    timetables.add(new Timetable(lessonTime, studentService.getStudentByTimeTable(lessonTime)));
+                }
             }
-
         }
+
+
         student.setTimetables(timetables);
-        teacher.setSchedules(schedules);
         studentRepository.save(student);
-        teacherRepository.save(teacher);
     }
-
-//    @Override
-//    public void changeStudentTimetable(Long studentId, LessonPeriod lessonPeriod, LessonPeriod newLessonPeriod) {
-//        Student student = studentRepository.findById(studentId).
-//                orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId));
-//        Teacher teacher = student.getTeacher();
-//        if (teacher == null) {
-//            throw new ResourceNotFoundException("Student " + studentId + " doesnt have a teacher");
-//        }
-//        List<Timetable> timetables = student.getTimetables();
-//        List<Timetable> tmpTimetable = timetables.stream().filter((s) -> s.getStartLesson().compareTo(lessonPeriod.getStartLesson()) == 0 && s.getEndLesson().compareTo(lessonPeriod.getEndLesson()) == 0).collect(Collectors.toList());
-//        if (tmpTimetable.size() == 0) throw new ClientRequestException("This timetable doesn't exist:" + lessonPeriod.toString());
-//                timetables.remove(tmpTimetable.get(1));
-//        student.setTimetables(timetables);
-//        studentRepository.save(student);
-//        try{
-//
-//            if (studentService.findStudentByTouchingPeriod(newLessonPeriod).stream()
-//                    .anyMatch((s) -> s.getTeacher().getId() == teacher.getId())) {
-//                throw new RuntimeException();
-//            }
-//        }catch (RuntimeException e){
-//            timetables.add(new Timetable(timetableRepository.findTimetableByPeriod(
-//                    Timestamp.from(lessonPeriod.getStartLesson().toInstant()),
-//                    Timestamp.from(lessonPeriod.getEndLesson().toInstant()))));
-//            student.setTimetables(timetables);
-//            studentRepository.save(student);
-//            e.addSuppressed(new ClientRequestException(lessonPeriod.toString() + "is not available"));
-//        }
-//
-//        timetables.add(new Timetable(timetableRepository.findTimetableByPeriod(
-//                Timestamp.from(lessonPeriod.getStartLesson().toInstant()),
-//                Timestamp.from(lessonPeriod.getEndLesson().toInstant()))));
-//
-//        List<Schedule> schedules = teacher.getSchedules();
-//        Schedule schedule = schedules.stream().filter((s) -> s.getStartTime().compareTo(lessonPeriod.getStartLesson()) == 0 && s.getFinishTime().compareTo(lessonPeriod.getEndLesson()) == 0).findFirst().get();
-//        schedules.remove(schedule);
-//        schedules.add(new Schedule(scheduleRepository.findScheduleByPeriod(
-//                Timestamp.from(lessonPeriod.getStartLesson().toInstant()),
-//                Timestamp.from(lessonPeriod.getEndLesson().toInstant()))));
-//
-//        student.setTimetables(timetables);
-//        teacher.setSchedules(schedules);
-//        studentRepository.save(student);
-//        teacherRepository.save(teacher);
-//    }
-
 
     @Override
     public void addTeacherToStudent(Long studentId, Long teacherId) {
-        Student student = studentRepository.findById(studentId).
-        orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId));
-        student.setTeacher(teacherRepository.findById(teacherId).
-                orElseThrow(() -> new ResourceNotFoundException("This teacher doesn't exist", teacherId)));
+        Student student = studentRepository.findById(studentId).get();
+        student.setTeacher(teacherRepository.findById(teacherId).get());
         studentRepository.save(student);
     }
 
     @Override
+    public void setTeacherSchedule(Long teacherId, List<TimePeriod> workingTimes) {
+        if (workingTimes.isEmpty()) throw new BadRequestException("Input working time is empty");
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new ResourceNotFoundException("This teacher doesn't exist", teacherId));
+        List<Schedule> schedules = new ArrayList<>(teacher.getSchedules());
+        for (TimePeriod workingTime : workingTimes) {
+            if (teacher.getSchedules().isEmpty()) {
+                schedules.add(new Schedule(workingTime, teacherService.getTeacherBySchedule(workingTime)));
+                continue;
+            }
+            for (Schedule schedule : teacher.getSchedules()) {
+                if (workingTime.isPeriodsCrosses(schedule.getTimePeriod())) {
+                    throw new BadRequestException("Working time " + workingTime + " is not available");
+                }
+                schedules.add(new Schedule(workingTime, teacherService.getTeacherBySchedule(workingTime)));
+            }
+        }
+
+        teacher.setSchedules(schedules);
+        teacherRepository.save(teacher);
+    }
+
+    @Override
+    public void deleteTeacherSchedule(Long teacherId, TimePeriod workingTime) {
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new ResourceNotFoundException("This teacher doesn't exist", teacherId));
+        if (teacher.getSchedules().isEmpty()) {
+            throw new ResourceNotFoundException("This teacher doesn't have a schedule", teacherId);
+        }
+        List<Schedule> schedules = new ArrayList<>(teacher.getSchedules());
+        for (Schedule schedule : schedules) {
+            if (schedule.getTimePeriod().getStartTime().compareTo(workingTime.getStartTime()) == 0
+                    && schedule.getTimePeriod().getFinishTime().compareTo(workingTime.getFinishTime()) == 0) {
+                schedules.remove(schedule);
+                for (Student student: teacher.getStudents()) {
+                    if (student.getTimetables().isEmpty()) continue;
+                    List<Timetable> timetables = new ArrayList<>();
+                    for (Timetable timetable : student.getTimetables()) {
+                        if (!timetable.getTimePeriod().isPeriodIn(schedule.getTimePeriod())){
+                            timetables.add(timetable);
+                        }
+                    }
+                    student.setTimetables(timetables);
+                    studentRepository.save(student);
+                }
+
+            }
+            break;
+        }
+        teacher.setSchedules(schedules);
+        teacherRepository.save(teacher);
+    }
+
+
     public void changeCurrentTeacher(Long studentId, Long teacherId) {
-        Student student = studentRepository.findById(studentId).
-                orElseThrow(() -> new ResourceNotFoundException("This student doesn't exist", studentId));
-        Teacher teacher = teacherRepository.findById(teacherId).
-                orElseThrow(() -> new ResourceNotFoundException("This teacher doesn't exist", teacherId));
+        Student student = studentRepository.findById(studentId).get();
+        Teacher teacher = teacherRepository.findById(teacherId).get();
         student.setTeacher(teacher);
         teacher.getStudents().add(student);
         teacherRepository.save(teacher);
     }
 
-
-
-    @Override
     public void addStudent(Student student) {
         studentRepository.save(student);
+
     }
-    @Override
+
     public void deleteStudent(Long studentID) {
+
         studentRepository.deleteById(studentID);
     }
 
-    @Override
+
     public void updateStudentLessons(Long studentId, Long lessonsLeft) {
 
         Student student = studentRepository.findById(studentId)
