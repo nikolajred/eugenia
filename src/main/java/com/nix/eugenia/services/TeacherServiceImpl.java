@@ -1,17 +1,15 @@
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.exceptions.ResourceNotFoundException;
 import com.nix.eugenia.exceptions.TeacherNotFoundException;
-import com.nix.eugenia.model.Schedule;
-import com.nix.eugenia.model.Student;
-import com.nix.eugenia.model.Teacher;
-import com.nix.eugenia.model.TimePeriod;
+import com.nix.eugenia.model.*;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,8 +52,34 @@ public class TeacherServiceImpl implements TeacherService {
                 .stream().anyMatch(schedules -> schedules.getTimePeriod().getId() == timePeriod.getId())).collect(Collectors.toList());
     }
 
+    @Override
+    public List<TimePeriod> getTeacherSchedules(Long teacherId) {
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new ResourceNotFoundException("This teacher doesn't exist", teacherId));
+        List<TimePeriod> timePeriods = new ArrayList<>();
+        for (Schedule schedule : teacher.getSchedules()) {
+            timePeriods.add(schedule.getTimePeriod());
+        }
+        return timePeriods;
+    }
 
-    public List<Student> getStudentsByTeacherId(Long teacherId){
+    @Override
+    public Map<TimePeriod, Student> getTimetableByTeacherSchedule(Long teacherId, TimePeriod lessonTime) {
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new ResourceNotFoundException("This teacher doesn't exist", teacherId));
+        Map<TimePeriod, Student> timePeriods = new HashMap<>();
+        for (Student student : teacher.getStudents()) {
+            for (Timetable timetable : student.getTimetables()) {
+                if (timetable.getTimePeriod().isPeriodIn(lessonTime)){
+                    timePeriods.put(timetable.getTimePeriod(), student);
+                }
+            }
+        }
+        return timePeriods;
+    }
+
+
+    public List<Student> getStudentsByTeacherId(Long teacherId) {
         return teacherRepository.findById(teacherId).get().getStudents();
     }
+
+
 }

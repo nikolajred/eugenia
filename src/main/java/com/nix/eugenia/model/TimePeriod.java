@@ -14,7 +14,6 @@ import java.util.Set;
 @Entity
 @Table(name = "timePeriod")
 @EqualsAndHashCode
-@ToString
 public class TimePeriod {
 
     @Id
@@ -52,5 +51,13 @@ public class TimePeriod {
 
     public boolean isPeriodIn(TimePeriod timePeriod){
         return startTime.compareTo(timePeriod.getStartTime()) >= 0 && finishTime.compareTo(timePeriod.getFinishTime()) <= 0;
+    }
+
+    @Override
+    public String toString() {
+        return "TimePeriod{" +
+                "startTime=" + startTime +
+                ", finishTime=" + finishTime +
+                '}';
     }
 }

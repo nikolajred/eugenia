@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
 
-    private  final TeacherServiceImpl teacherServiceImpl;
+    private final TeacherServiceImpl teacherServiceImpl;
     private final TeacherService teacherService;
     private final TeacherRepository teacherRepository;
 
@@ -43,12 +44,15 @@ public class TeacherController {
         return teacherService.getTeacherByName(name);
     }
 
-    @GetMapping("/students/{id}")
-    public List<Student> getTeacherByName(@PathVariable(name = "id")  Long teacherId) {
-        return teacherServiceImpl.getStudentsByTeacherId(teacherId);
+    @GetMapping("/{id}/schedules")
+    public List<TimePeriod> getTeacherSchedules(@PathVariable(name = "id") Long teacherId) {
+        return teacherServiceImpl.getTeacherSchedules(teacherId);
     }
 
-
+    @PutMapping("/{id}/students/timetables")
+    public  Map<TimePeriod, Student> getTeacherStudentsTimetablesInThisSchedule(@PathVariable(name = "id") Long teacherId, @RequestBody TimePeriod lessonTimes) {
+        return teacherServiceImpl.getTimetableByTeacherSchedule(teacherId, lessonTimes);
+    }
 
 
 }

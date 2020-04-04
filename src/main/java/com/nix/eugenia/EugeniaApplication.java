@@ -10,7 +10,8 @@ package com.nix.eugenia;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
-public class EugeniaApplication {
+public class
+EugeniaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EugeniaApplication.class, args);
