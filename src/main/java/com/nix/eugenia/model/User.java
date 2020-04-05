@@ -12,11 +12,9 @@ import java.util.*;
 @Table(name = "usr")
 @NoArgsConstructor
 @AllArgsConstructor
-//@EqualsAndHashCode(of = {"email"})
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(of = {"email"}, callSuper = false)
+public class User extends AbstractEntity{
+
 
     @Column
     private String email;

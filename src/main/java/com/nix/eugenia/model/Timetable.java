@@ -3,15 +3,9 @@ package com.nix.eugenia.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nix.eugenia.exceptions.ClientRequestException;
-import com.nix.eugenia.structures.LessonPeriod;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 
@@ -20,47 +14,28 @@ import java.util.List;
 @Entity
 @Table(name = "timetable")
 @NoArgsConstructor
-@AllArgsConstructor
-public class Timetable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+@EqualsAndHashCode(callSuper = false)
+public class Timetable extends AbstractEntity {
 
 
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startLesson;
-
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endLesson;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "time_period_id")
+//    @JsonIgnoreProperties("timetables")
+//    @JsonBackReference
+    private TimePeriod timePeriod;
 
 
     @ManyToMany(mappedBy = "timetables")
-    @JsonIgnoreProperties("timetables")
-    @JsonBackReference
+//    @JsonIgnoreProperties("timetables")
+//    @JsonBackReference(value = "student")
     private List<Student> students;
 
 
-    public Timetable(LessonPeriod lessonPeriod) {
-        if (lessonPeriod.getStartLesson().after(lessonPeriod.getEndLesson()) || lessonPeriod.getStartLesson().compareTo(lessonPeriod.getEndLesson()) == 0 ){
-            throw new ClientRequestException("incorrect timetable data");
-        }
-        this.startLesson = lessonPeriod.getStartLesson();
-        this.endLesson = lessonPeriod.getEndLesson();
-
+    public Timetable(TimePeriod timePeriod, List<Student> students) {
+        this.timePeriod = timePeriod;
+        this.students = students;
     }
 
 
-    public Timetable(Timetable timetable) {
-        if (timetable.getStartLesson().after(timetable.getEndLesson()) || timetable.getStartLesson().compareTo(timetable.getEndLesson()) == 0 ){
-            throw new ClientRequestException("incorrect timetable data");
-        }
-        this.id = timetable.getId();
-        this.startLesson = timetable.getStartLesson();
-        this.endLesson = timetable.getEndLesson();
-        this.students = timetable.getStudents();
-    }
+
 }

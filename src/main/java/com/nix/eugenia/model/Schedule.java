@@ -1,13 +1,10 @@
 package com.nix.eugenia.model;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nix.eugenia.exceptions.ClientRequestException;
-import com.nix.eugenia.structures.LessonPeriod;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -15,43 +12,28 @@ import java.util.List;
 @Entity
 @Table(name = "schedule")
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-public class Schedule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@EqualsAndHashCode(callSuper = false)
+public class Schedule extends AbstractEntity {
 
-    @Column(name = "start_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startTime;
 
-    @Column(name = "finish_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date finishTime;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "time_period_id")
+//    @JsonBackReference
+//    @JsonIgnoreProperties("schedule")
+    private TimePeriod timePeriod;
+
+
+
+
 
     @ManyToMany(mappedBy = "schedules")
-    @JsonIgnoreProperties("schedules")
-    private List<Teacher> teachers = new ArrayList<>();
+//    @JsonIgnoreProperties("schedules")
+    private List<Teacher> teachers;
 
-
-    public Schedule(LessonPeriod lessonPeriod) {
-        if (lessonPeriod.getStartLesson().after(lessonPeriod.getEndLesson()) || lessonPeriod.getStartLesson().compareTo(lessonPeriod.getEndLesson()) == 0 ){
-            throw new ClientRequestException("incorrect schedule data");
-        }
-        this.startTime = lessonPeriod.getStartLesson();
-        this.finishTime = lessonPeriod.getEndLesson();
+    public Schedule(TimePeriod timePeriod, List<Teacher> teachers) {
+        this.timePeriod = timePeriod;
+        this.teachers = teachers;
     }
 
-
-    public Schedule(Schedule schedule) {
-        if (schedule.getStartTime().after(schedule.getFinishTime()) || schedule.getStartTime().compareTo(schedule.getFinishTime()) == 0 ){
-            throw new ClientRequestException("incorrect schedule data");
-        }
-        this.id = schedule.getId();
-        this.startTime = schedule.getStartTime();
-        this.finishTime = schedule.getFinishTime();
-        this.teachers = schedule.getTeachers();
-    }
 }
 
