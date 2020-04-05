@@ -3,10 +3,7 @@ package com.nix.eugenia.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,24 +14,20 @@ import java.util.List;
 @Entity
 @Table(name = "timetable")
 @NoArgsConstructor
-@AllArgsConstructor
-public class Timetable {
+@EqualsAndHashCode(callSuper = false)
+public class Timetable extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "time_period_id")
-    @JsonIgnoreProperties("timetables")
-    @JsonBackReference
+//    @JsonIgnoreProperties("timetables")
+//    @JsonBackReference
     private TimePeriod timePeriod;
 
 
     @ManyToMany(mappedBy = "timetables")
-    @JsonIgnoreProperties("timetables")
-    @JsonBackReference(value = "student")
+//    @JsonIgnoreProperties("timetables")
+//    @JsonBackReference(value = "student")
     private List<Student> students;
 
 

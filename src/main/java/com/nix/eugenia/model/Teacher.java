@@ -16,13 +16,9 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"email"})
-public class Teacher {
+@EqualsAndHashCode(of = {"email"}, callSuper = false)
+public class Teacher extends AbstractEntity {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @Column
     private String name;
@@ -35,7 +31,7 @@ public class Teacher {
             name = "teacher_schedules",
             joinColumns = @JoinColumn(name = "teachers_id"),
             inverseJoinColumns = @JoinColumn(name = "schedules_id"))
-    @JsonIgnoreProperties("teachers")
+//    @JsonIgnoreProperties("teachers")
     private List<Schedule> schedules = new ArrayList<>();
 
 

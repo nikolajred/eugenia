@@ -1,5 +1,6 @@
 package com.nix.eugenia.controllers;
 
+import com.nix.eugenia.DTO.StudentDTO;
 import com.nix.eugenia.model.Student;
 
 import com.nix.eugenia.services.StudentServiceImpl;
@@ -17,12 +18,12 @@ public class StudentController {
 
 
     @GetMapping("/students/{id}")
-    public Student getStudentById(@PathVariable Long id) {
+    public StudentDTO getStudentById(@PathVariable Long id) {
         return studentServiceImpl.getStudent(id);
     }
 
     @GetMapping("/students")
-    public List<Student> getAllStudents()
+    public List<StudentDTO> getAllStudents()
 
     {
         return studentServiceImpl.getAllStudents();

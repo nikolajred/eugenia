@@ -1,5 +1,6 @@
 package com.nix.eugenia.controllers;
 
+import com.nix.eugenia.DTO.StudentDTO;
 import com.nix.eugenia.DTO.UpdateEntity;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
@@ -21,13 +22,13 @@ public class AdministratorController {
 
 
     @PutMapping(path = "/students/add", consumes = "application/json", produces = "application/json")
-    public void addStudent(@RequestBody Student student) {
+    public void addStudent(@RequestBody StudentDTO student) {
         administratorServiceImpl.addStudent(student);
     }
 
     @DeleteMapping(path = "/students/delete")
-    public void deleteStudent(@Valid @RequestBody UpdateEntity updateEntity) {
-        administratorServiceImpl.deleteStudent(updateEntity.getStudent().getId());
+    public void deleteStudent(@Valid @RequestBody  StudentDTO studentDTO) {
+        administratorServiceImpl.deleteStudent(studentDTO.getId());
     }
 
     @PutMapping(path = "/student/{id}/add/timetable", consumes = "application/json", produces = "application/json")

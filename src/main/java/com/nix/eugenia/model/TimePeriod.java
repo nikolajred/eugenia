@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -13,12 +14,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "timePeriod")
-@EqualsAndHashCode
-public class TimePeriod {
+@EqualsAndHashCode(callSuper = false)
+public class TimePeriod extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
@@ -29,10 +27,10 @@ public class TimePeriod {
     private Date finishTime;
 
     @OneToMany(mappedBy = "timePeriod", cascade = CascadeType.ALL)
-    private Set<Timetable> timetables;
+    private List<Timetable> timetables;
 
     @OneToMany(mappedBy = "timePeriod", cascade = CascadeType.ALL)
-    private Set<Schedule> schedules;
+    private List<Schedule> schedules;
 
 
 

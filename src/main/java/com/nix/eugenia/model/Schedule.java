@@ -12,17 +12,14 @@ import java.util.List;
 @Entity
 @Table(name = "schedule")
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-public class Schedule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@EqualsAndHashCode(callSuper = false)
+public class Schedule extends AbstractEntity {
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "time_period_id")
-    @JsonBackReference
-    @JsonIgnoreProperties("schedule")
+//    @JsonBackReference
+//    @JsonIgnoreProperties("schedule")
     private TimePeriod timePeriod;
 
 
@@ -30,8 +27,8 @@ public class Schedule {
 
 
     @ManyToMany(mappedBy = "schedules")
-    @JsonIgnoreProperties("schedules")
-    private List<Teacher> teachers = new ArrayList<>();
+//    @JsonIgnoreProperties("schedules")
+    private List<Teacher> teachers;
 
     public Schedule(TimePeriod timePeriod, List<Teacher> teachers) {
         this.timePeriod = timePeriod;

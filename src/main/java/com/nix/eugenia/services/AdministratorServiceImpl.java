@@ -1,11 +1,15 @@
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.DTO.StudentDTO;
 import com.nix.eugenia.exceptions.BadRequestException;
 import com.nix.eugenia.exceptions.ResourceNotFoundException;
+import com.nix.eugenia.mapper.StudentMapper;
+import com.nix.eugenia.mapper.TeacherMapper;
 import com.nix.eugenia.model.*;
 import com.nix.eugenia.repositories.StudentRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class AdministratorServiceImpl implements AdministratorService {
 
@@ -21,6 +24,17 @@ public class AdministratorServiceImpl implements AdministratorService {
     private final StudentService studentService;
     private final TeacherRepository teacherRepository;
     private final TeacherService teacherService;
+    private final StudentMapper mapper;
+
+    @Autowired
+    public AdministratorServiceImpl(StudentRepository studentRepository, StudentService studentService, TeacherRepository teacherRepository, TeacherService teacherService, StudentMapper mapper) {
+        this.studentRepository = studentRepository;
+        this.studentService = studentService;
+        this.teacherRepository = teacherRepository;
+        this.teacherService = teacherService;
+        this.mapper = mapper;
+    }
+
 
     @Override
     public List<Teacher> addTeacher() {
@@ -140,8 +154,8 @@ public class AdministratorServiceImpl implements AdministratorService {
         teacherRepository.save(teacher);
     }
 
-    public void addStudent(Student student) {
-        studentRepository.save(student);
+    public void addStudent(StudentDTO studentDto) {
+        studentRepository.save(mapper.toEntity(studentDto));
 
     }
 

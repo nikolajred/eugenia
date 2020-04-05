@@ -11,11 +11,9 @@ import java.util.*;
 @Table(name = "role")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of ={"name"})
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(of ={"name"}, callSuper = false)
+public class Role extends AbstractEntity {
+
 
     @Column
     private String name;

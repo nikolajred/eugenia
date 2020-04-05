@@ -18,7 +18,6 @@ import javax.persistence.Table;
 @Data
 public class UpdateEntity {
     private Student student;
-
     private Teacher teacher;
     private Role role;
     private User user;

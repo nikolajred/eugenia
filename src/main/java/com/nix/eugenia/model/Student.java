@@ -15,14 +15,10 @@ import java.util.List;
 @Table(name = "student")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class Student {
+@EqualsAndHashCode(callSuper = false)
+public class Student extends AbstractEntity {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
     @Column
     private String name;
     @Column
@@ -30,7 +26,7 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    @JsonBackReference
+//    @JsonBackReference
     private Teacher teacher;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -38,7 +34,7 @@ public class Student {
             name = "students_timetables",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "timetables_id"))
-    @JsonIgnoreProperties("teachers")
+//    @JsonIgnoreProperties("teachers")
     private List<Timetable> timetables = new ArrayList<>();
 
     @Column
