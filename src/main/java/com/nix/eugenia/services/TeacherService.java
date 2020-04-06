@@ -21,6 +21,11 @@ public interface TeacherService {
 
     List<Student> getStudentsByTeacherId(Long teacherId);
 
+    String startLesson(Long teacherId, Long studentId
+            , String lessonName, String videoName);
+
 
     void addSchedule(Long id, List<LessonPeriod> lessonTimeList);
+
+    String finishLesson(Long studentId);
 }

@@ -19,4 +19,6 @@ public interface StudentService {
 
     List<Timetable> getStudentTimetable(Long id);
 
+    String joinLesson(Long studentId);
+
 }

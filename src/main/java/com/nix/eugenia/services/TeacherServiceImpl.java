@@ -1,11 +1,13 @@
 
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.exceptions.ResourceNotFoundException;
 import com.nix.eugenia.exceptions.TeacherNotFoundException;
 import com.nix.eugenia.model.Schedule;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.repositories.ScheduleRepository;
+import com.nix.eugenia.repositories.StudentRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import com.nix.eugenia.structures.LessonPeriod;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final ScheduleRepository scheduleRepository;
+    private final StudentRepository studentRepository;
 
 
     @Override
@@ -53,6 +56,18 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public String startLesson(Long teacherId, Long studentId,
+                              String lessonName, String videoName) {
+
+        Student newStudent = studentRepository.findById(studentId).orElseThrow(()->
+        new ResourceNotFoundException("I'm sorry but there's no student ", studentId));
+             newStudent.setVideoLesson(videoName);
+             newStudent.setCanJoinLesson(true);
+             studentRepository.save(newStudent);
+        return videoName+"   "+ lessonName;
+    }
+
+    @Override
     public void addSchedule(Long id, List<LessonPeriod> lessonTimeList) {
 
         Teacher newTeacher = teacherRepository.findById(id).get();
@@ -66,4 +81,17 @@ public class TeacherServiceImpl implements TeacherService {
         teacherRepository.save(newTeacher);
 
     }
+
+    @Override
+    public String finishLesson(Long studentId) {
+
+        Student newStudent = studentRepository.findById(studentId).orElseThrow(()->
+                new ResourceNotFoundException("I'm sorry but there's no student ", studentId));
+        newStudent.setVideoLesson("lesson hasn't been started yet");
+        newStudent.setCanJoinLesson(false);
+        studentRepository.save(newStudent);
+        return "lesson has been stopped";
+
+    }
+
 }

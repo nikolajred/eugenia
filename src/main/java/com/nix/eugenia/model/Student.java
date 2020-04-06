@@ -3,6 +3,7 @@ package com.nix.eugenia.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,6 +46,13 @@ public class Student {
 
     @Column
     private Long lessonsLeft ;
+
+    @Column
+    @JsonProperty(defaultValue = "false")
+    private Boolean canJoinLesson=false;
+
+    @Column
+    private String videoLesson;
 
 
     public Student(String name, String role) {

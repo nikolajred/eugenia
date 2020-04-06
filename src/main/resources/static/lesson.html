@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Test Lesson</title>
     <meta charset="UTF-8"/>
@@ -16,8 +16,10 @@
         frameborder="1"
         align="left"
 ></iframe>
+<div sec:authorize="isAuthenticated()">
+    <input type="button" onclick="connectToVideo()"  value="Connect to video">
+</div>
 
-<input type="button" onclick="connectToVideo()"  value="Connect to video">
 
 <script> function connectToVideo(name) { document.getElementById('video').src = "https://meet.jit.si/"+name; } </script>
 

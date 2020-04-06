@@ -45,4 +45,14 @@ public class StudentServiceImpl implements StudentService {
         return student.getTimetables();
     }
 
+    @Override
+    public String joinLesson(Long studentId) {
+        Student newStudent = studentRepository.findById(studentId).orElseThrow(() ->
+                new ResourceNotFoundException("I'm sorry but there's no student ", studentId));
+        if(newStudent.getCanJoinLesson()){
+            return newStudent.getVideoLesson();
+        }
+        return "Your teacher has't started the lesson yet";
+    }
+
 }
