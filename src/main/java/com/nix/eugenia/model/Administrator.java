@@ -4,17 +4,16 @@ import lombok.*;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "administrator")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-public class Administrator {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@EqualsAndHashCode(callSuper = false)
+public class Administrator extends AbstractEntity {
+
     @Column
     private String name;
     @Column
@@ -23,6 +22,8 @@ public class Administrator {
     private String login;
     @Column
     private String password;
+
+
 
 
 }

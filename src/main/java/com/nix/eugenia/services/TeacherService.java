@@ -1,25 +1,31 @@
 package com.nix.eugenia.services;
 
+import com.nix.eugenia.DTO.StudentDTO;
+import com.nix.eugenia.DTO.TeacherDTO;
+import com.nix.eugenia.DTO.TimePeriodDTO;
+import com.nix.eugenia.model.Schedule;
 import com.nix.eugenia.model.Student;
 import com.nix.eugenia.model.Teacher;
-import com.nix.eugenia.structures.LessonPeriod;
+import com.nix.eugenia.model.TimePeriod;
 
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface TeacherService {
-    Teacher getTeacherById(Long id);
+    TeacherDTO getTeacherById(Long id);
 
-    List<Teacher> getTeacherBySchedule(Date startTime);
+    List<TeacherDTO> getTeacherByStartSchedule(Date startTime);
 
-//    List<Teacher>getTeacherByPeriod(LessonPeriod LessonTime);
+    //    List<Teacher> getTeacherByFullSchedule(Schedule lessonTime);
+    List<TeacherDTO> getAllTeachers();
 
-    List<Teacher> getAllTeachers();
+    List<TeacherDTO> getTeacherByName(String name);
 
-    List<Teacher> getTeacherByName(String name);
+    List<Teacher> getTeacherBySchedule(TimePeriod timePeriod);
 
-    List<Student> getStudentsByTeacherId(Long teacherId);
+    List<TimePeriodDTO> getTeacherSchedules(Long teacherId);
 
     String startLesson(Long teacherId, Long studentId
             , String lessonName, String videoName);
@@ -28,4 +34,5 @@ public interface TeacherService {
     void addSchedule(Long id, List<LessonPeriod> lessonTimeList);
 
     String finishLesson(Long studentId);
+    public Map<TimePeriodDTO, StudentDTO> getTimetableByTeacherSchedule(Long teacherId, TimePeriod lessonTime);
 }
