@@ -9,6 +9,7 @@ import com.nix.eugenia.mapper.StudentMapper;
 import com.nix.eugenia.mapper.TeacherMapper;
 import com.nix.eugenia.mapper.TimePeriodMapper;
 import com.nix.eugenia.model.*;
+import com.nix.eugenia.repositories.StudentRepository;
 import com.nix.eugenia.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,16 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherMapper teacherMapper;
     private final TimePeriodMapper timePeriodMapper;
     private final StudentMapper studentMapper;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public TeacherServiceImpl(TeacherRepository teacherRepository, TeacherMapper teacherMapper, TimePeriodMapper timePeriodMapper, StudentMapper studentMapper) {
+    public TeacherServiceImpl(TeacherRepository teacherRepository, TeacherMapper teacherMapper
+            , TimePeriodMapper timePeriodMapper, StudentMapper studentMapper,  StudentRepository studentRepository) {
         this.teacherRepository = teacherRepository;
         this.teacherMapper = teacherMapper;
         this.timePeriodMapper = timePeriodMapper;
         this.studentMapper = studentMapper;
+        this.studentRepository = studentRepository;
     }
 
 
@@ -95,6 +99,31 @@ public class TeacherServiceImpl implements TeacherService {
 
     public List<Student> getStudentsByTeacherId(Long teacherId) {
         return teacherRepository.findById(teacherId).get().getStudents();
+    }
+
+
+    @Override
+    public String startLesson(Long teacherId, Long studentId,
+                              String lessonName, String videoName) {
+
+        Student newStudent = studentRepository.findById(studentId).orElseThrow(() ->
+                new ResourceNotFoundException("I'm sorry but there's no student ", studentId));
+        newStudent.setVideoLesson(videoName);
+        newStudent.setCanJoinLesson(true);
+        studentRepository.save(newStudent);
+        return videoName + "   " + lessonName;
+    }
+
+    @Override
+    public String finishLesson(Long studentId) {
+
+        Student newStudent = studentRepository.findById(studentId).orElseThrow(() ->
+                new ResourceNotFoundException("I'm sorry but there's no student ", studentId));
+        newStudent.setVideoLesson("lesson hasn't been started yet");
+        newStudent.setCanJoinLesson(false);
+        studentRepository.save(newStudent);
+        return "lesson has been stopped";
+
     }
 
 

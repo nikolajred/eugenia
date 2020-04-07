@@ -12,5 +12,6 @@ public interface StudentService {
     public List<StudentDTO> getAllStudents();
 //    List<Student> getStudentsByTimeTable(TimePeriod lessonPeriod);
     List<Student> getStudentByTimeTable(TimePeriod timePeriod);
+    String joinLesson(Long studentId);
 
 }

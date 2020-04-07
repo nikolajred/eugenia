@@ -1,10 +1,12 @@
 package com.nix.eugenia.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nix.eugenia.model.Teacher;
 import com.nix.eugenia.model.Timetable;
 import lombok.*;
 
+import javax.persistence.Column;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -20,4 +22,9 @@ public class StudentDTO extends AbstractDTO {
     @JsonIgnoreProperties("students")
     private List<Timetable> timetables;
     private Long lessonsLeft;
+    @JsonProperty(defaultValue = "false")
+    private Boolean canJoinLesson = false;
+    private String videoLesson;
+
+
 }

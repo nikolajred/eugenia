@@ -47,4 +47,16 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll().stream().filter(stud -> stud.getTimetables()
                 .stream().anyMatch(timetable -> timetable.getTimePeriod().equals(timePeriod))).collect(Collectors.toList());
     }
+
+
+    @Override
+    public String joinLesson(Long studentId) {
+        Student newStudent = studentRepository.findById(studentId).orElseThrow(() ->
+                new ResourceNotFoundException("I'm sorry but there's no student ", studentId));
+        if(newStudent.getCanJoinLesson()){
+            return newStudent.getVideoLesson();
+        }
+        return "Your teacher has't started the lesson yet";
+    }
+
 }

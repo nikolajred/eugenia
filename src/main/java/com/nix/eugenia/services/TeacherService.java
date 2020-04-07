@@ -28,4 +28,8 @@ public interface TeacherService {
     List<TimePeriodDTO> getTeacherSchedules(Long teacherId);
 
     public Map<TimePeriodDTO, StudentDTO> getTimetableByTeacherSchedule(Long teacherId, TimePeriod lessonTime);
+    String finishLesson(Long studentId);
+
+    String startLesson(Long teacherId, Long studentId,
+                       String lessonName, String videoName);
 }
